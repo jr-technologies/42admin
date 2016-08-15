@@ -14,6 +14,15 @@ use App\Transformers\Request\RequestTransformer;
 class GetUsersTransformer extends RequestTransformer{
 
     public function transform(){
-        return request()->all();
+        return [
+            'email'=>$this->request->input('email'),
+            'phone'=>$this->request->input('phone'),
+            'firstName'=>$this->request->input('fname'),
+            'lastName'=>$this->request->input('lname'),
+            'type'=>$this->request->input('type'),
+            'limit'=>$this->request->input('limit')
+
+        ];
+
     }
 } 

@@ -129,4 +129,5 @@ class UsersRepository extends SqlRepository implements UsersRepoInterface
         $userRolesIds = Helper::propertyToArray($userRoles, 'id');
         return (in_array($this->idForAgentBroker, $userRolesIds))?true:false;
     }
+
 }

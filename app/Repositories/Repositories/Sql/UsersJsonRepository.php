@@ -59,7 +59,7 @@ class UsersJsonRepository extends SqlRepository implements UsersJsonRepoInterfac
     }
     public function search(array $params)
     {
-
+        return $this->factory->search($params);
     }
     public function find($id)
     {
@@ -99,4 +99,5 @@ class UsersJsonRepository extends SqlRepository implements UsersJsonRepoInterfac
     {
         return $this->factory->getPendingAgents();
     }
+
 }

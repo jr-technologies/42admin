@@ -32,14 +32,7 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
 class AuthController extends WebController
 {
-    private $auth;
-    private $users;
-    private $userTransformer;
-    public $response;
-    private $agencies;
-    private $roles;
-    public $propertyTypes;
-    public $propertySubtypes;
+
     public function __construct
     (
         WebResponse $response, Authenticator $authenticator,

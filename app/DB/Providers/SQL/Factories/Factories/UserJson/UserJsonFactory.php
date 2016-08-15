@@ -115,7 +115,10 @@ class UserJsonFactory extends SQLFactory implements SQLFactoriesInterface{
         return $user;
     }
 
-
+    public function search($params)
+    {
+        return $this->mapCollection($this->tableGateway->search($params));
+    }
     private function mapUserOnTable(UserJsonPrototype $user)
     {
         return [

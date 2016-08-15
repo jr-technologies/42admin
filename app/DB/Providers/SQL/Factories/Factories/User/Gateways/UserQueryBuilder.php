@@ -36,4 +36,5 @@ class UserQueryBuilder extends QueryBuilder{
         return $this->insertMultiple($userRoles, 'user_roles');
     }
 
+
 }
