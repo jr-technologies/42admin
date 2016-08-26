@@ -229,7 +229,12 @@ return [
         'ApproveAgentRequest' => \App\Http\Requests\Requests\User\ApproveAgentRequest::class,
         'IndexRequest' => \App\Http\Requests\Requests\IndexRequest::class,
 
-
+        /* Banners */
+        'AddBannerRequest' => \App\Http\Requests\Requests\Banners\AddBannerRequest::class,
+        'GetAllBannersRequest' => \App\Http\Requests\Requests\Banners\GetAllBannersRequest::class,
+        'DeleteBannerRequest' => \App\Http\Requests\Requests\Banners\DeleteBannerRequest::class,
+        'GetBannerRequest' => \App\Http\Requests\Requests\Banners\GetBannerRequest::class,
+        'UpdateBannerRequest' => \App\Http\Requests\Requests\Banners\UpdateBannerRequest::class,
 
         /* Loading Helpers */
         'AppHelper' => \App\Libs\Helpers\AppHelper::class,

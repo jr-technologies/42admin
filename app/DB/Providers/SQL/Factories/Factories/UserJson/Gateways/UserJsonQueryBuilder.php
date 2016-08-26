@@ -12,7 +12,6 @@ namespace App\DB\Providers\SQL\Factories\Factories\UserJson\Gateways;
 use App\DB\Providers\SQL\Factories\Factories\Agency\AgencyFactory;
 use App\DB\Providers\SQL\Factories\Factories\AgencySociety\AgencySocietyFactory;
 use App\DB\Providers\SQL\Factories\Factories\AgencyStaff\AgencyStaffFactory;
-use App\DB\Providers\SQL\Factories\Factories\PropertyJson\Gateways\Helpers\UserPropertiesHelper;
 use App\DB\Providers\SQL\Factories\Factories\User\UserFactory;
 use App\DB\Providers\SQL\Factories\Factories\UserRole\UserRolesFactory;
 use App\DB\Providers\SQL\Factories\Helpers\QueryBuilder;
@@ -20,7 +19,6 @@ use App\Repositories\Providers\Providers\UsersRepoProvider;
 use Illuminate\Support\Facades\DB;
 
 class UserJsonQueryBuilder extends QueryBuilder{
-    use UserPropertiesHelper;
     private $agentPrimaryKey = 3;
     public function __construct(){
         $this->table = "user_json";
@@ -65,25 +63,14 @@ class UserJsonQueryBuilder extends QueryBuilder{
     {
         $userTable = (new UserFactory())->getTable();
         $userRoleTable = (new UserRolesFactory())->getTable();
-        $limit = $this->getLimit($params);
 
         $query = DB::table($userTable)
             ->leftjoin($userRoleTable,$userTable.'.id','=',$userRoleTable.'.user_id')
             ->leftjoin($this->table,$userTable.'.id','=',$this->table.'.user_id')
             ->select($this->table.'.json')
             ->distinct();
-        if(isset($params['email']) && $params['email'] !=null && $params['email'] !="")
-            $query = $query->where($userTable.'.email','=',$params['email']);
-        if(isset($params['phone']) && $params['phone'] !=null && $params['phone'] !="")
-            $query = $query->where($userTable.'.phone','=',$params['phone']);
-        if(isset($params['firstName']) && $params['firstName'] !=null && $params['firstName'] !="")
-            $query = $query->where($userTable.'.f_name','like','%'.$params['firstName'].'%');
-        if(isset($params['lastName']) && $params['lastName'] !=null && $params['lastName'] !="")
-            $query = $query->where($userTable.'.l_name','like','%'.$params['lastName'].'%');
-        if(isset($params['type']) && $params['type'] !=null && $params['type'] !="")
-            $query = $query->where($userRoleTable.'.role_id',$params['type']);
-
-        $query = $query->skip($limit['start'])->take($limit['limit']);
+        if (isset($params['userRole']) && $params['userRole'] !=null && $params['userRole'] !="")
+            $query = $query->where($userRoleTable.'.role_id',$params['userRole']);
        return  $query = $query->get();
     }
 
@@ -192,6 +179,4 @@ class UserJsonQueryBuilder extends QueryBuilder{
         \Session::flash('totalAgentsFound', DB::select('select FOUND_ROWS() as count'));
         return $agents;
     }
-
-
 }

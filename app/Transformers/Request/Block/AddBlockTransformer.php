@@ -12,4 +12,4 @@ class AddBlockTransformer extends RequestTransformer
          'block'=>$this->request->input('block_name')
      ];
  }
-    }
+}

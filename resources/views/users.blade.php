@@ -69,14 +69,14 @@
                     <td>{{(isset($user->fName))?$user->fName.' '.$user->lName:''}}</td>
                     <td>{{(isset($user->roles[0]->name))?$user->roles[0]->name:''}}</td>
                     <td>
-                        {{Form::open(array('url'=>'delete/blocks','method'=>'POST','class'=>'rejectApprove-form'))}}
-                        <input hidden name="block_id" value="{{isset($user->id)}}">
+                        {{Form::open(array('url'=>'delete/user','method'=>'POST','class'=>'rejectApprove-form'))}}
+                        <input hidden name="user_id" value="{{(isset($user->id))?$user->id:''}}">
                         <button><span type="submit" ></span>Delete</button>
                         {{Form::close()}}
-                        {{Form::open(array('url'=>'get/update/block/form','method'=>'POST','class'=>'rejectApprove-form'))}}
-                        <input hidden name="block_id" value="{{isset($user->id)}}">
-                        <button><span type="submit" ></span>Update</button>
-                        {{Form::close()}}
+                        {{--{{Form::open(array('url'=>'get/update/block/form','method'=>'POST','class'=>'rejectApprove-form'))}}--}}
+                        {{--<input hidden name="block_id" value="{{isset($user->id)}}">--}}
+                        {{--<button><span type="submit" ></span>Update</button>--}}
+                        {{--{{Form::close()}}--}}
                     </td>
                 </tr>
                 @endforeach

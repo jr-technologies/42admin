@@ -198,5 +198,4 @@ class UserFactory extends SQLFactory implements SQLFactoriesInterface{
             'updated_at' => $user->updatedAt,
         ];
     }
-
 }

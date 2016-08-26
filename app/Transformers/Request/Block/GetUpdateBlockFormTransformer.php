@@ -17,6 +17,7 @@ class GetUpdateBlockFormTransformer extends RequestTransformer
     {
         return [
                 'id'=>$this->request->input('block_id'),
+                'societyId'=>$this->request->input('society_id'),
         ];
     }
 }

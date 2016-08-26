@@ -11,7 +11,6 @@ namespace App\Http\Requests\Requests\User;
 
 use App\Http\Requests\Interfaces\RequestInterface;
 use App\Http\Requests\Request;
-use App\Http\Validators\Validators\UserValidators\GetUsersValidator;
 use App\Transformers\Request\User\GetUsersTransformer;
 
 class GetUsersRequest extends Request implements RequestInterface{
@@ -19,7 +18,8 @@ class GetUsersRequest extends Request implements RequestInterface{
     public $validator;
     public function __construct(){
         parent::__construct(new GetUsersTransformer($this->getOriginalRequest()));
-        $this->validator = new GetUsersValidator($this);
+
+        $this->validator = null;
     }
 
     public function authorize(){
@@ -27,7 +27,7 @@ class GetUsersRequest extends Request implements RequestInterface{
     }
 
     public function validate(){
-        return $this->validator->validate();
+        return true;
     }
 
 } 

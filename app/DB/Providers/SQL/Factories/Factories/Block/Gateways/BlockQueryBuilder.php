@@ -25,6 +25,7 @@ class BlockQueryBuilder extends QueryBuilder
             ->leftjoin($societyTable,$this->table.'.society_id','=',$societyTable.'.id')
             ->select($societyTable.'.*')
             ->where($this->table.'.id','=',$blockId)
+            ->orderBy($this->table.'.id','=','DESC')
             ->first();
     }
 
@@ -33,6 +34,7 @@ class BlockQueryBuilder extends QueryBuilder
         return DB::table($this->table)
             ->select($this->table.'.*')
             ->where($this->table.'.society_id' ,'=',$societyId)
+            ->orderBy($this->table.'.id','=','DESC')
             ->get();
     }
     public function getBlocksWithSociety()
@@ -40,7 +42,7 @@ class BlockQueryBuilder extends QueryBuilder
         $societyTable = (new SocietyFactory())->getTable();
         return  DB::table($this->table)
             ->leftjoin($societyTable,$this->table.'.society_id','=',$societyTable.'.id')
-            ->select($societyTable.'.id as societyId',$societyTable.'.society',$this->table.'.*')
+            ->select($societyTable.'.id as societyId',$societyTable.'.society')
             ->orderBy($this->table.'.id','DESC')
             ->get();
     }
