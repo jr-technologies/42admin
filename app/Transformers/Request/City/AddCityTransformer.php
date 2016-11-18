@@ -18,7 +18,9 @@ class AddCityTransformer extends RequestTransformer
     {
         return [
             'name'=>$this->request->input('city_name'),
-            'country_id' => $this->request->input('country_id')
+            'countryId' => $this->request->input('country_id'),
+            'priority' => $this->request->input('priority'),
+            'file' => $this->request->file('fileToUpload')
         ];
     }
 }

@@ -1,45 +1,62 @@
-@extends('admin2')
+@extends('admin')
 @section('content')
-
-    <style>
-        table, th, td {
-            border: 1px solid black;
-
-        }
-    </style>
-    <div style="max-width: 1200px; margin: 0 0 0 -200px; position: relative; left: 50%;">
-
-        <table style="width:50%">
-
-              <tr>
-                <th>Banner ID</th>
-                <th>Block type</th>
-                <th>Image</th>
-                <th>Banner Position</th>
-                <th>Action</th>
-                  </tr>
-                @if(isset($response['data']['banners']))
-                    @foreach($response['data']['banners'] as $banner)
-                <tr>
-                    <td>{{$banner->id}}</td>
-                    <td>{{$banner->bannerType}}</td>
-                    <td><img src="{{ url('/').'/'.$banner->image}}" width="100px" height="100px"></td>
-                    <td>{{$banner->position}}</td>
-                    <td>
-                        {{Form::open(array('url'=>'delete/banner','method'=>'POST'))}}
-                        <input hidden name="banner_id" value="{{$banner->id}}">
-                        <button><span type="submit" ></span>Delete</button>
-                        {{Form::close()}}
-                        <br />
+<div class="layout text-right"><a href="{{URL::to('banners')}}" class="btn-hollow">Add a Banner</a></div>
+    <div class="banner-listing">
+        <ul class="listing-pro">
+            <li class="t-h text-upparcase text-center">
+                <div class="pro-id border">
+                    <label for="property-id" class="customCheckbox">
+                        <input type="checkbox" id="property-id">
+                        <span class="fake-checkbox"></span>
+                        <span class="fake-label">ID</span>
+                    </label>
+                </div>
+                <div class="pro-city border"><p>Page name</p></div>
+                <div class="pro-priority border"><p>Type</p></div>
+                <div class="pro-position border"><p>Position</p></div>
+                <div class="pro-date border"><p>Date</p></div>
+                <div class="pro-image border"><p>Image</p></div>
+                <div class="pro-controls border"><p>Controls</p></div>
+            </li>
+            @if(isset($response['data']['banners']))
+                @foreach($response['data']['banners'] as $banner)
+            <li class="t-d text-center">
+                <div class="pro-id border">
+                    <label for="property-id-td" class="customCheckbox">
+                        <input type="checkbox" id="property-id-td">
+                        <span class="fake-checkbox"></span>
+                        <span class="fake-label">{{$banner->id}}</span>
+                    </label>
+                </div>
+                <div class="pro-city border"><p>{{$banner->page}}</p></div>
+                <div class="pro-priority border"><p>{{$banner->bannerType}}</p></div>
+                <div class="pro-position border"><time>{{$banner->position}}</time></div>
+                <div class="pro-date border"><time>{{$banner->createdAt}}</time></div>
+                <div class="pro-image border"><img src="{{url('/').'/'.$banner->image}}" width="100" height="100"></div>
+                <div class="pro-controls border">
+                    <ul class="control-link">
                         {{Form::open(array('url'=>'get/update/banner/form','method'=>'POST','class'=>'rejectApprove-form'))}}
                         <input hidden name="banner_id" value="{{$banner->id}}">
-                        <button><span type="submit" ></span>Update</button>
+                        <li class="active"><button><span class="icon-update-arrows"></span></span>Update</button></li>
                         {{Form::close()}}
-                    </td>
-                </tr>
+                        {{Form::open(array('url'=>'delete/banner','method'=>'POST'))}}
+                        <input hidden name="banner_id" value="{{$banner->id}}">
+                        <li class="deactive"><button><span class="icon-cross"></span>Delete</button></li>
+                        {{Form::close()}}
+
+
+                    </ul>
+                </div>
+            </li>
                 @endforeach
             @endif
-        </table>
+            <li>
+                <div class="propertyNotFound hidden">
+                    <strong class="no-heading">sorry, no record found</strong>
+                    <p>There is no property in record.</p>
+                </div>
+            </li>
+        </ul>
     </div>
     <?php
     $for_previous_link = $_GET;

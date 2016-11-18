@@ -240,6 +240,14 @@ return [
         'AppHelper' => \App\Libs\Helpers\AppHelper::class,
         'PathHelper' => \App\Libs\Helpers\PathHelper::class,
 
+        /* LocationValidators Requests */
+        'GetLocationByCityRequest' => \App\Http\Requests\Requests\Location\GetLocationByCityRequest::class,
+        'AddLocationRequest' => \App\Http\Requests\Requests\Location\AddLocationRequest::class,
+        'SearchLocationRequest' => \App\Http\Requests\Requests\Location\SearchLocationRequest::class,
+        'GetLocationRequest' => \App\Http\Requests\Requests\Location\GetLocationRequest::class,
+        'UpdateLocationRequest' => \App\Http\Requests\Requests\Location\UpdateLocationRequest::class,
+        'DeleteLocationRequest' => \App\Http\Requests\Requests\Location\DeleteLocationRequest::class,
+
         /*  Mail Requests */
         'AgentMailRequest' => \App\Http\Requests\Requests\Mail\AgentMailRequest::class,
         'MailPropertyToFriendRequest' => \App\Http\Requests\Requests\Mail\MailPropertyToFriendRequest::class,
@@ -343,6 +351,7 @@ return [
         'AddToFavouriteRequest' => \App\Http\Requests\Requests\AddToFavourite\AddToFavouriteRequest::class,
         'DeleteToFavouritePropertyRequest' => \App\Http\Requests\Requests\AddToFavourite\DeleteToFavouritePropertyRequest::class,
         'DeleteMultiFavouritePropertyRequest' => \App\Http\Requests\Requests\AddToFavourite\DeleteMultiFavouritePropertyRequest::class,
+        'GetPropertiesByUserRequest' => \App\Http\Requests\Requests\Property\GetPropertiesByUserRequest::class,
 
         /* Admin Requests */
         'GetAdminPropertyRequest' => \App\Http\Requests\Requests\Property\GetAdminPropertyRequest::class,
@@ -350,9 +359,11 @@ return [
         'RejectPropertyRequest' => \App\Http\Requests\Requests\Property\RejectPropertyRequest::class,
         'ApprovePropertyRequest' => \App\Http\Requests\Requests\Property\ApprovePropertyRequest::class,
         'GetAdminAgentRequest' => \App\Http\Requests\Requests\User\GetAdminAgentRequest::class,
+        'GetAdminAgentsRequest' => \App\Http\Requests\Requests\User\GetAdminAgentsRequest::class,
         'AdminLoginRequest' => \App\Http\Requests\Requests\Auth\AdminLoginRequest::class,
         'VerifyPropertyRequest' => \App\Http\Requests\Requests\property\VerifyPropertyRequest::class,
         'DeVerifyPropertyRequest' => \App\Http\Requests\Requests\property\DeVerifyPropertyRequest::class,
+        'SoftDeletePropertyRequest' => \App\Http\Requests\Requests\property\SoftDeletePropertyRequest::class,
         'DeActivePropertyRequest' => \App\Http\Requests\Requests\property\DeActivePropertyRequest::class,
 
         'GetAdminActivePropertyRequest' => \App\Http\Requests\Requests\Admin\GetAdminActivePropertyRequest::class,
@@ -360,6 +371,15 @@ return [
         'GetAdminExpiredPropertyRequest' => \App\Http\Requests\Requests\Admin\GetAdminExpiredPropertyRequest::class,
         'GetAdminRejectedPropertyRequest' => \App\Http\Requests\Requests\Admin\GetAdminRejectedPropertyRequest::class,
         'GetAdminDeletedPropertyRequest' => \App\Http\Requests\Requests\Admin\GetAdminDeletedPropertyRequest::class,
+
+        /* News */
+        'AddNewsRequest' => \App\Http\Requests\Requests\News\AddNewsRequest::class,
+        'GetAllNewsRequest' => \App\Http\Requests\Requests\News\GetAllNewsRequest::class,
+        'DeleteNewsRequest' => \App\Http\Requests\Requests\News\DeleteNewsRequest::class,
+        'DeleteNewsImageRequest' => \App\Http\Requests\Requests\News\DeleteNewsImageRequest::class,
+        'GetNewsRequest' => \App\Http\Requests\Requests\News\GetNewsRequest::class,
+        'GetNewsImagesRequest' => \App\Http\Requests\Requests\News\GetNewsImagesRequest::class,
+        'UpdateNewsRequest' => \App\Http\Requests\Requests\News\UpdateNewsRequest::class,
 
 
         /* Feature Section Requests */
@@ -374,6 +394,14 @@ return [
         'DeleteRoleRequest' => \App\Http\Requests\Requests\Role\DeleteRoleRequest::class,
         'GetAllRolesRequest' => \App\Http\Requests\Requests\Role\GetAllRolesRequest::class,
 
+        /* Project */
+        'AddProjectRequest' => \App\Http\Requests\Requests\Project\AddProjectRequest::class,
+        'GetAllProjectsRequest' => \App\Http\Requests\Requests\Project\GetAllProjectsRequest::class,
+        'DeleteProjectRequest' => \App\Http\Requests\Requests\Project\DeleteProjectRequest::class,
+        'DeleteProjectImageRequest' => \App\Http\Requests\Requests\Project\DeleteProjectImageRequest::class,
+        'GetProjectRequest' => \App\Http\Requests\Requests\Project\GetProjectRequest::class,
+        'GetProjectImagesRequest' => \App\Http\Requests\Requests\Project\GetProjectImagesRequest::class,
+        'UpdateProjectRequest' => \App\Http\Requests\Requests\Project\UpdateProjectRequest::class,
 
         /*User Roles Requests */
         'AddUserRoleRequest' => \App\Http\Requests\Requests\UserRole\AddUserRoleRequest::class,

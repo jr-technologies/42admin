@@ -15,8 +15,9 @@ class GetAdminActivePropertiesTransformer extends RequestTransformer
 
     public function transform()
     {
-       return [
-
+        return [
+            'page' => $this->request->get('page'),
+            'limit' => $this->request->get('limit'),
         ];
     }
 

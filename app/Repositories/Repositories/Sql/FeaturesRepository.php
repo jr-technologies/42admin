@@ -11,22 +11,27 @@ namespace App\Repositories\Repositories\Sql;
 
 use App\DB\Providers\SQL\Factories\Factories\Feature\FeatureFactory;
 use App\DB\Providers\SQL\Models\Features\Feature;
+use App\Events\Events\Feature\UpdateFeatureJson;
 use App\Repositories\Interfaces\Repositories\FeaturesRepoInterface;
+use App\Repositories\Providers\Providers\PropertySubTypeAssignedFeatureRepoProvider;
+use Illuminate\Support\Facades\Event;
 
 
 class FeaturesRepository extends SqlRepository implements FeaturesRepoInterface
 {
     private $factory;
+    public $propertySubTypeAssignFeature = null;
     public function __construct()
     {
-         $this->factory = new FeatureFactory();
+        $this->factory = new FeatureFactory();
+        $this->propertySubTypeAssignFeature = (new PropertySubTypeAssignedFeatureRepoProvider())->repo();
     }
     public function store(Feature $feature)
     {
-        return $this->factory->store($feature);
+        $featureId = $this->factory->store($feature);
+        $this->propertySubTypeAssignFeature->store(['property_sub_type_id'=>$feature->subTypeId,'property_feature_id'=>$featureId]);
+        return Event::fire(new UpdateFeatureJson($feature->subTypeId));
     }
-
-
     public function getById($id)
     {
         return $this->factory->find($id);

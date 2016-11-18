@@ -6,4 +6,4 @@
  * Time: 4:40 PM
  */
 
-die(header('Location: http://property42.pk/public'));
+die(header('location: http://property42.pk/public'));

@@ -10,6 +10,6 @@ namespace App\DB\Providers\SQL\Models\Property;
 class PropertyCompleteLocation {
     public $country = null;
     public $city = null;
-    public $society = null;
-    public $block = null;
+    //public $society = null;
+    public $location = null;
 } 

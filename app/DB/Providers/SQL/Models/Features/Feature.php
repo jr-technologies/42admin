@@ -16,6 +16,7 @@ class Feature {
     public $inputName;
     public $htmlStructureId;
     public $possibleValues;
+    public $subTypeId =0;
     public $priority = 0;
 
     public $createdAt = '0000-00-00 00:00:00';

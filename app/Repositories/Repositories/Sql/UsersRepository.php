@@ -45,10 +45,17 @@ class UsersRepository extends SqlRepository implements UsersRepoInterface
 
     public function getFirstWithRelations(array $where = [])
     {
-        $user = $this->getWithRelations($where)->first();
-        return $this->userTransformer->transform($user);
+        return $this->userTransformer->transform($this->getWithRelations($where)->first());
     }
-
+    public function getAgentCountByStatus()
+    {
+        return $this->finalAgentCount($this->factory->getAgentCountByStatus());
+    }
+    public function finalAgentCount(array $users)
+    {
+        $collection = collect($users);
+        return $collection->groupBy('trusted_agent');
+    }
     /**
      * @param string $column
      * @param string $value
@@ -74,7 +81,14 @@ class UsersRepository extends SqlRepository implements UsersRepoInterface
     }
     public function makeTrustedAgent(User $user)
     {
-        $this->factory->makeTrustedAgent($user);
+        $user->trustedAgent = 1;
+        $this->factory->UpdateAgentStatus($user);
+        return Event::fire(new UserUpdated($user));
+    }
+    public function makeNotTrustedAgent(User $user)
+    {
+        $user->trustedAgent = 0;
+        $this->factory->UpdateAgentStatus($user);
         return Event::fire(new UserUpdated($user));
     }
     public function getByToken($token)

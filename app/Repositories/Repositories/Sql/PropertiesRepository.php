@@ -52,6 +52,7 @@ class PropertiesRepository extends SqlRepository implements PropertyTypeRepoInte
     {
         return $this->factory->countSaleAndRendProperties();
     }
+
     public function IncrementViews($propertyId)
     {
         $this->factory->IncrementViews($propertyId);
@@ -94,6 +95,13 @@ class PropertiesRepository extends SqlRepository implements PropertyTypeRepoInte
         Event::fire(new PropertyDEVerified($property));
         return $result;
     }
+    public function softDeleteProperty(Property $property)
+    {
+        $property->statusId=(new \PropertyStatusTableSeeder())->getDeletedStatusId();
+        $result = $this->factory->update($property);
+        Event::fire(new PropertyStatusUpdated($property));
+        return $result;
+    }
     public function approveProperty(Property $property)
     {
         $property->statusId=(new \PropertyStatusTableSeeder())->getActiveStatusId();
@@ -103,7 +111,7 @@ class PropertiesRepository extends SqlRepository implements PropertyTypeRepoInte
     }
     public function deActiveProperty(Property $property)
     {
-        $property->statusId=(new \PropertyStatusTableSeeder())->getPendingStatusId();
+        $property->statusId = (new \PropertyStatusTableSeeder())->getPendingStatusId();
         $result = $this->factory->update($property);
         Event::fire(new PropertyStatusUpdated($property));
         return $result;
@@ -154,9 +162,9 @@ class PropertiesRepository extends SqlRepository implements PropertyTypeRepoInte
     {
         return $this->factory->getCompleteLocation($id);
     }
-    public function countProperties($userId)
+    public function countProperties()
     {
-        return $this->factory->countProperties($userId);
+        return $this->factory->countProperties();
     }
     public function favouriteProperty(FavouriteProperty $addToFavourite)
     {

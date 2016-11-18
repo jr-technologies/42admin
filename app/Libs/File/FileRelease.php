@@ -11,6 +11,7 @@ namespace App\Libs\File;
 
 use App\DB\Providers\SQL\Models\ReleasedFile;
 use App\Libs\Helpers\Helper;
+use App\Libs\Helpers\PathHelper;
 use App\Repositories\Repositories\Sql\ReleasedFilesRepository;
 use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\File\File;
@@ -33,7 +34,7 @@ class FileRelease
 
     public function getCompleteFilePath()
     {
-        return storage_path('app/').$this->getFilePath();
+        return PathHelper::nugreeStoragePath().'/app/'.$this->getFilePath();
     }
 
     public function release($minutes = null)
@@ -118,7 +119,7 @@ class FileRelease
 
     public function getReleasedFilesPath()
     {
-        return public_path('temp/');
+        return PathHelper::nugreePublicPath().('/temp/');
     }
 
     public function secureName()

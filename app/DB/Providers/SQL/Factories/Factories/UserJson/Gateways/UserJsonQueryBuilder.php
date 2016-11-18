@@ -10,8 +10,10 @@ namespace App\DB\Providers\SQL\Factories\Factories\UserJson\Gateways;
 
 
 use App\DB\Providers\SQL\Factories\Factories\Agency\AgencyFactory;
+use App\DB\Providers\SQL\Factories\Factories\AgencyLocation\AgencyLocationFactory;
 use App\DB\Providers\SQL\Factories\Factories\AgencySociety\AgencySocietyFactory;
 use App\DB\Providers\SQL\Factories\Factories\AgencyStaff\AgencyStaffFactory;
+use App\DB\Providers\SQL\Factories\Factories\Location\LocationFactory;
 use App\DB\Providers\SQL\Factories\Factories\User\UserFactory;
 use App\DB\Providers\SQL\Factories\Factories\UserRole\UserRolesFactory;
 use App\DB\Providers\SQL\Factories\Helpers\QueryBuilder;
@@ -22,6 +24,7 @@ class UserJsonQueryBuilder extends QueryBuilder{
     private $agentPrimaryKey = 3;
     public function __construct(){
         $this->table = "user_json";
+        $this->roleId = new \RoleTableSeeder();
     }
 
     public function findByUser($id)
@@ -74,17 +77,42 @@ class UserJsonQueryBuilder extends QueryBuilder{
        return  $query = $query->get();
     }
 
-    public function getPendingAgents()
+    public function getAgents($params)
     {
         $userTable = (new UserFactory())->getTable();
         $userRoleTable = (new UserRolesFactory())->getTable();
         return DB::table($userTable)
            ->join($this->table,$userTable.'.id','=',$this->table.'.user_id')
            ->leftjoin($userRoleTable,$userTable.'.id','=',$userRoleTable.'.user_id')
-           ->select($this->table.'.json')
-            ->where($userRoleTable.'.role_id','=',3)
-           ->where($userTable.'.trusted_agent','=',0)
+           ->select(DB::raw('SQL_CALC_FOUND_ROWS '.$this->table.'.json'))
+           ->where($userRoleTable.'.role_id','=',$this->roleId->getAgentBroker())
+           ->where($userTable.'.trusted_agent','=',$params['id'])
+           ->groupBy($this->table.'user_id')
+           ->skip($this->computePagination($params)['start'])->take(config('constants.PROPERTIES_LIMIT'))
            ->get();
+    }
+    public function agentCount()
+    {
+        return DB::select('select FOUND_ROWS() as total_records');
+    }
+
+    private function computePagination($params)
+    {
+        $pagination = [
+            'start' => 0,
+            'limit' => config('constants.PROPERTIES_LIMIT')
+        ];
+        if(isset($params['page']) ){
+            $page = intval($params['page']);
+            $page = ($page < 1)?1: $page;
+            $limit = intval($params['limit']);
+            $limit = ($limit < 1)?config('constants.PROPERTIES_LIMIT'):$limit;
+            $start = $limit*($page-1);
+
+            $pagination['start'] = $start;
+            $pagination['limit'] = $limit;
+        }
+        return $pagination;
     }
     public function trustedAgents(array $params)
     {
@@ -115,6 +143,7 @@ class UserJsonQueryBuilder extends QueryBuilder{
         \Session::flash('totalAgentsFound', DB::select('select FOUND_ROWS() as count'));
         return $agents;
     }
+
     public function getTrustedAgentsWithPriority(array $params)
     {
         $userTable = (new UserFactory())->getTable();
@@ -155,18 +184,18 @@ class UserJsonQueryBuilder extends QueryBuilder{
         $userTable = (new UserFactory())->getTable();
         $userRoleTable = (new UserRolesFactory())->getTable();
         $agencyTable = (new AgencyFactory())->getTable();
-        $agencySocietyTable = (new AgencySocietyFactory())->getTable();
+        $agencyLocationTable = (new AgencyLocationFactory())->getTable();
 
         $query = DB::table($userTable)
             ->leftjoin($userRoleTable,$userTable.'.id','=',$userRoleTable.'.user_id')
             ->join($this->table,$userTable.'.id','=',$this->table.'.user_id')
             ->leftjoin($agencyTable,$userTable.'.id','=',$agencyTable.'.user_id')
-            ->leftjoin($agencySocietyTable,$agencyTable.'.id','=',$agencySocietyTable.'.agency_id')
+            ->leftjoin($agencyLocationTable,$agencyTable.'.id','=',$agencyLocationTable.'.agency_id')
             ->select(DB::raw('SQL_CALC_FOUND_ROWS '.$this->table.'.json'))
             ->distinct();
 
-        if($params['society'] !=null && $params['society'] !="")
-            $query = $query->where($agencySocietyTable.'.society_id','=',$params['society']);
+        if($params['location'] !=null && $params['location'] !="")
+            $query = $query->where($agencyLocationTable.'.location_id','=',$params['location']);
 
         if($params['agencyName'] !=null && $params['agencyName'] !="")
             $query = $query->where($agencyTable.'.agency','like','%'.$params['agencyName'].'%');

@@ -103,7 +103,7 @@ abstract class QueryBuilder {
         {
             $query = $query->where($column,$value);
         }
-        return $query->update($data);
+         return $query->update($data);
     }
     public function incrementValuesWhereIn($whereColumn, $in , $incrementColumn)
     {

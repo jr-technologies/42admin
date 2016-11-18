@@ -59,7 +59,7 @@ class BannersSocietiesFactory extends SQLFactory implements SQLFactoriesInterfac
 
         foreach($societies as $key=>$value)
         {
-            $finalRecord[] = ['banner_id'=>$bannerId,'society_id'=>$value,'created_at' =>date('Y-m-d h:i:s')];
+            $finalRecord[] = ['banner_id'=>$bannerId,'location_id'=>$value,'created_at' =>date('Y-m-d h:i:s')];
         }
         return $this->tableGateway->insertMultiple($finalRecord);
     }

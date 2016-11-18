@@ -53,13 +53,21 @@ class PropertyJsonFactory extends SQLFactory implements SQLFactoriesInterface{
     {
         return $this->mapCollection($this->tableGateway->all());
     }
+    public function propertyCount()
+    {
+        return $this->tableGateway->propertyCount();
+    }
     public function getActiveProperties($propertyActiveStatus)
     {
         return $this->mapCollection($this->tableGateway->getPropertiesByStatuses($propertyActiveStatus));
     }
-    public function getPendingProperties($propertyPendingStatus)
+    public function getPropertiesByUser($params)
     {
-        return $this->mapCollection($this->tableGateway->getPropertiesByStatuses($propertyPendingStatus));
+        return $this->mapCollection($this->tableGateway->getPropertiesByUser($params));
+    }
+    public function getPendingProperties($params)
+    {
+        return $this->mapCollection($this->tableGateway->getPropertiesByStatuses($params));
     }
     public function getExpiredProperties($propertyExpiredStatus)
     {
@@ -178,6 +186,8 @@ class PropertyJsonFactory extends SQLFactory implements SQLFactoriesInterface{
         $property->isHot = $propertyJson->isHot;
         $property->land = $propertyJson->land;
         $property->isFeatured = $propertyJson->isFeatured;
+        if(isset($propertyJson->wanted))
+            $property->wanted = $propertyJson->wanted;
         $property->isDeleted = $propertyJson->isDeleted;
         $property->features = $propertyJson->features;
         $property->description = $propertyJson->description;

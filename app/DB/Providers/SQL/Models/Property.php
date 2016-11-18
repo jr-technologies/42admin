@@ -14,7 +14,7 @@ class Property {
     public $purposeId;
     public $ownerId;
     public $subTypeId;
-    public $blockId;
+    public $locationId;
     public $title;
     public $description;
     public $price;

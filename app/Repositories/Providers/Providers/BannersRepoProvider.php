@@ -13,6 +13,7 @@ namespace App\Repositories\Providers\Providers;
 
 use App\Repositories\Providers\RepositoryProvider;
 use App\Repositories\Providers\RepositoryProviderInterface;
+use App\Repositories\Repositories\Sql\BannerLocationsRepository;
 use App\Repositories\Repositories\Sql\BannerPagesRepository;
 use App\Repositories\Repositories\Sql\BannerSocietiesRepository;
 use App\Repositories\Repositories\Sql\BannersRepository;
@@ -27,7 +28,7 @@ class BannersRepoProvider extends RepositoryProvider implements RepositoryProvid
     }
     public function bannerSocieties()
     {
-        return new BannerSocietiesRepository();
+        return new BannerLocationsRepository();
     }
     public function bannerSizes()
     {

@@ -13,6 +13,8 @@ class City {
     public $id = 0;
     public $name = "";
     public $countryId = 1;
+    public $priority =0;
+    public $path="";
     public $createdAt = '0000-00-00 00:00:00';
     public $updatedAt = '0000-00-00 00:00:00';
 

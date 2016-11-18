@@ -9,7 +9,7 @@
 namespace App\Traits\Property;
 
 use App\Libs\File\FileRelease;
-use App\Libs\Json\Prototypes\Prototypes\Property\Owner\PropertyAgencyJsonPrototype;
+use App\Libs\Helpers\PathHelper;
 use App\Libs\Json\Prototypes\Prototypes\Property\PropertyDocumentJsonPrototype;
 use App\Libs\Json\Prototypes\Prototypes\Property\PropertyJsonPrototype;
 use App\Traits\AppTrait;
@@ -39,7 +39,7 @@ trait PropertyFilesReleaser
         {
             foreach($property->documents as $document /* @var $document PropertyDocumentJsonPrototype */)
             {
-                if(file_exists(storage_path('app/'.$document->path)))
+                if(file_exists(PathHelper::nugreeStoragePath().'/app/'.$document->path))
                 {
                     $releasedFile = (new FileRelease($document->path))->doNotLog()->release();
                     $document->path = $releasedFile->path;
@@ -47,6 +47,7 @@ trait PropertyFilesReleaser
                 }
             }
         }
+
         (new FileRelease())->multiLogInDb($releasedFiles);
         return $properties;
     }

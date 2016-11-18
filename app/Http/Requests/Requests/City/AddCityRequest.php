@@ -38,8 +38,21 @@ class AddCityRequest extends Request implements RequestInterface{
     {
         $city = new City();
         $city->name = $this->get('name');
-        $city->countryId = $this->get('country_id');
+        $city->countryId = $this->get('countryId');
+        $city->priority = $this->get('priority');
+        $city->path = $this->getCityImage();
         return $city;
+    }
+    public function getCityImage()
+    {
+        $originalName = $this->get('file');
+        if(isset($originalName)) {
+            $extension = $originalName->getClientOriginalExtension();
+            $imageName = md5($originalName->getClientOriginalName()) . '.' . $extension;
+            $originalName->move(public_path() . '/assets/imgs/42_ads', $imageName);
+            return 'assets/imgs/42_ads/' . $imageName;
+        }
+        return '';
     }
 
 } 

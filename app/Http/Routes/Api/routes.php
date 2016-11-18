@@ -158,6 +158,17 @@ Route::post('user/agency/staff/update',
     ]
 );
 
+Route::get('city/location',
+    [
+        'middleware'=>
+            [
+               // 'apiValidate:getSocietiesByCityRequest'
+            ],
+
+        'uses'=>'LocationsController@getByCity'
+    ]
+);
+
 Route::post('user/agency/staff/delete',
     [
         'middleware'=>

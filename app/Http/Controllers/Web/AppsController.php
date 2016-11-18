@@ -23,7 +23,7 @@ class AppsController extends Controller
     public function addPropertyWithAuth(GetAddPropertyWithAuthAppRequest $appRequest)
     {
         if(!$appRequest->isNotAuthentic()){
-            die(header('Location: '.url('/').'/dashboard#/home/properties/add'));
+            die(header('location: '.url('/').'/dashboard#/home/properties/add'));
         }
 
         $version = $appRequest->version();

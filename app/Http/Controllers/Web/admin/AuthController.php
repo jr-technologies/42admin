@@ -20,15 +20,24 @@ class AuthController extends Controller
     }
     public function getLoginPage()
     {
-        return $this->response->setView('admin.Auth.login')->respond(['data'=>'']);
+        return $this->response->setView('Auth.login')->respond(['data'=>'']);
     }
     public function login(AdminLoginRequest $request)
     {
         $admin = $this->adminRepo->getAdmin($request->getCredentials());
         if(sizeof($admin) >0)
         {
-            Session::set('admin',$admin);
-            return redirect('admin/agents');
+            if(md5($request->get('password')) == $admin->password)
+            {
+                Session::set('admin',$admin);
+                return redirect('/get/active/property');
+            }
+            else{
+                Session::flash('message', 'Invalid Email or Password');
+                return redirect('/');
+            }
         }
+        Session::flash('message', 'Invalid Email or Password');
+        return redirect('/');
     }
 }

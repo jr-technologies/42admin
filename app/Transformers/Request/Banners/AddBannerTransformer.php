@@ -18,7 +18,7 @@ class AddBannerTransformer extends RequestTransformer
     {
         return [
             'bannerImage'=>$this->request->file('fileToUpload'),
-            'societiesIds'=>$this->request->input('society_id'),
+            'locationIds'=>$this->request->input('society_id'),
             'pagesIds'=>$this->request->input('pages'),
             'area'=>$this->request->input('area'),
             'unit'=>$this->request->input('unit'),

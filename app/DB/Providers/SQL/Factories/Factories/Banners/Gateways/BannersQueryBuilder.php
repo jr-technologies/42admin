@@ -20,6 +20,19 @@ class BannersQueryBuilder extends QueryBuilder
     {
         $this->table = 'banners';
     }
+    public function getPageBanners($params)
+    {
+        $bannerPage = (new BannersPagesFactory())->getTable();
+        $page = (new PagesFactory())->getTable();
+        return DB::table($this->table)
+            ->leftjoin($bannerPage,$this->table.'.id','=',$bannerPage.'.banner_id')
+            ->leftjoin($page,$bannerPage.'.page_id','=',$page.'.id')
+            ->select(DB::raw('SQL_CALC_FOUND_ROWS '.$this->table.'.*'.','.$page.'.page'))
+            ->where($bannerPage.'.page_id','=',$params['pageId'])
+            ->skip($this->computePagination($params)['start'])->take(config('constants.defaultBannerLimit'))
+            ->get();
+    }
+
     public function getBanners($params)
     {
         $bannerSocietiesTable = (new BannersSocietiesFactory())->getTable();
@@ -84,9 +97,13 @@ class BannersQueryBuilder extends QueryBuilder
 
     public function getAllBanners($params)
     {
+        $bannerPage = (new BannersPagesFactory())->getTable();
+        $page = (new PagesFactory())->getTable();
         return DB::table($this->table)
-            ->select(DB::raw('SQL_CALC_FOUND_ROWS '.$this->table.'.*'))
-            ->skip($this->computePagination($params)['start'])->take(config('constants.defaultBannerLimit'))
+            ->leftjoin($bannerPage,$this->table.'.id','=',$bannerPage.'.banner_id')
+            ->leftjoin($page,$bannerPage.'.page_id','=',$page.'.id')
+            ->select(DB::raw('SQL_CALC_FOUND_ROWS '.$this->table.'.*'.','.$page.'.page'))
+            ->skip($this->computePagination($params)['start'])->take($this->computePagination($params)['limit'])
             ->get();
     }
     public function bannerCount()
@@ -103,7 +120,7 @@ class BannersQueryBuilder extends QueryBuilder
             $page = intval($params['page']);
             $page = ($page < 1)?1: $page;
             $limit = intval($params['limit']);
-            $limit = ($limit < 1)?config('constants.defaultBannerLimit'):$limit;
+            $limit = ($limit < 1)?config('constants.PROPERTIES_LIMIT'):$limit;
             $start = $limit*($page-1);
 
             $pagination['start'] = $start;

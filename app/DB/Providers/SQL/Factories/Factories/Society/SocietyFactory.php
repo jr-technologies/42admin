@@ -35,7 +35,10 @@ class SocietyFactory extends SQLFactory implements SQLFactoriesInterface
     {
         return $this->tableGateway->getSocietiesYouDealIn($agencyName);
     }
-
+    public function getByCity($cityId)
+    {
+        return $this->mapCollection($this->tableGateway->getByCity($cityId));
+    }
     public function getImportantSocieties()
     {
         return $this->mapCollection($this->tableGateway->getImportantSocieties());

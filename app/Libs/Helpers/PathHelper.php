@@ -20,4 +20,12 @@ class PathHelper extends Helper
     {
         return public_path('temp');
     }
+    public static function nugreeStoragePath()
+    {
+          return "/home/propett6/public_html/nugree/storage";
+    }
+    public static function nugreePublicPath()
+    {
+        return "http://nugree.com";
+    }
 }

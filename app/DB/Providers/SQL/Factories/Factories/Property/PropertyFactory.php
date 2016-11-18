@@ -18,6 +18,7 @@ use App\DB\Providers\SQL\Models\Block;
 use App\DB\Providers\SQL\Models\City;
 use App\DB\Providers\SQL\Models\Country;
 use App\DB\Providers\SQL\Models\FavouriteProperty;
+use App\DB\Providers\SQL\Models\Location;
 use App\DB\Providers\SQL\Models\Property;
 use App\DB\Providers\SQL\Models\Property\PropertyCompleteLocation;
 use App\DB\Providers\SQL\Models\PropertyPurpose;
@@ -42,10 +43,11 @@ class PropertyFactory extends SQLFactory implements SQLFactoriesInterface
     {
         return $this->map($this->tableGateway->find($id));
     }
+
     public function delete(Property $property)
     {
         $property->statusId = $this->statusesSeeder->getDeletedStatusId();
-        return  $this->tableGateway->updateWhere(['id'=>$property->id],$this->mapPropertyOnTable($property));
+        return $this->tableGateway->updateWhere(['id'=>$property->id],$this->mapPropertyOnTable($property));
     }
     public function countSaleAndRendProperties()
     {
@@ -59,15 +61,13 @@ class PropertyFactory extends SQLFactory implements SQLFactoriesInterface
     {
         return $this->tableGateway->deleteByIds($propertyIds);
     }
-
-
     public function forceDeleteByIds($propertyIds)
     {
         return $this->tableGateway->forceDeleteByIds($propertyIds);
     }
     public function forceDelete(Property $property)
     {
-        return  $this->tableGateway->delete($property->id);
+        return $this->tableGateway->delete($property->id);
     }
 
     function all()
@@ -113,20 +113,22 @@ class PropertyFactory extends SQLFactory implements SQLFactoriesInterface
         $city->name = $rawLocation->cityName;
         $city->countryId = $rawLocation->countryId;
 
-        $society = new Society();
-        $society->id = $rawLocation->societyId;
-        $society->name = $rawLocation->societyName;
-        $society->cityId = $rawLocation->cityId;
+//        $society = new Society();
+//        $society->id = $rawLocation->societyId;
+//        $society->name = $rawLocation->societyName;
+//        $society->cityId = $rawLocation->cityId;
 
-        $block = new Block();
-        $block->id = $rawLocation->blockId;
-        $block->name = $rawLocation->blockName;
-        $block->societyId = $rawLocation->societyId;
+        $location = new Location();
+        $location->id = $rawLocation->locationId;
+        $location->location = $rawLocation->locationName;
+        $location->cityId = $rawLocation->cityId;
+        $location->lat = $rawLocation->lat;
+        $location->long = $rawLocation->long;
 
         $propertyCompleteLocation->country = $country;
         $propertyCompleteLocation->city = $city;
-        $propertyCompleteLocation->society = $society;
-        $propertyCompleteLocation->block = $block;
+        //$propertyCompleteLocation->society = $society;
+        $propertyCompleteLocation->location = $location;
 
         return $propertyCompleteLocation;
     }
@@ -137,16 +139,16 @@ class PropertyFactory extends SQLFactory implements SQLFactoriesInterface
             'Id'=>$property->id,
             'purpose_id'=>$property->purposeId,
             'property_sub_type_id' => $property->subTypeId,
-            'block_id' => $property->blockId,
+            'location_id' => $property->locationId,
             'title' => $property->title,
             'description' => $property->description,
             'price' => $property->price,
             'land_area' => $property->landArea,
             'land_unit_id' => $property->landUnitId,
             'property_status_id' => $property->statusId,
-
             'contact_person' => $property->contactPerson,
             'phone' => $property->phone,
+            'wanted'=>$property->wanted,
             'mobile' => $property->mobile,
             'fax' => $property->fax,
             'email' => $property->email,
@@ -170,7 +172,7 @@ class PropertyFactory extends SQLFactory implements SQLFactoriesInterface
 
         $property->purposeId = $result->purpose_id;
         $property->subTypeId =  $result->property_sub_type_id;
-        $property->blockId =  $result->block_id;
+        $property->locationId =  $result->location_id;
         $property->title =  $result->title;
         $property->description =  $result->description;
         $property->price =  $result->price;
@@ -182,7 +184,8 @@ class PropertyFactory extends SQLFactory implements SQLFactoriesInterface
         $property->mobile =  $result->mobile;
         $property->fax =  $result->fax;
         $property->email =  $result->email;
-        $property->wanted = $result->wanted;
+        if(isset($result->wanted))
+            $property->wanted = $result->wanted;
         $property->ownerId = $result->owner_id;
 
         $property->statusId = $result->property_status_id;
@@ -208,13 +211,14 @@ class PropertyFactory extends SQLFactory implements SQLFactoriesInterface
         $this->tableGateway->setTable($table);
     }
 
-    public function rawPropertyCounts($userId)
+    public function rawPropertyCounts()
     {
-        $propertyCounts = $this->tableGateway->countProperties($userId);
+        $propertyCounts = $this->tableGateway->countProperties();
+        //dd($propertyCounts);
         $propertyCountsCollection = collect($propertyCounts);
-        $groupedByPurpose = $propertyCountsCollection->groupBy('purpose_id');
+        $groupedByStatus = $propertyCountsCollection->groupBy('property_status_id');
         $finalArray = [];
-        $groupedByPurpose->each(function($item, $key) use (&$finalArray){
+        $groupedByStatus->each(function($item, $key) use (&$finalArray){
             $statusesCounts = [];
             $item->each(function($status, $key) use (&$statusesCounts){
                 $statusesCounts[$status->property_status_id] = $status->totalPropertiesByStatus;
@@ -224,31 +228,24 @@ class PropertyFactory extends SQLFactory implements SQLFactoriesInterface
         return $finalArray;
     }
 
-    public function propertiesCounter($propertyCounts, $purpose, $status)
+    public function propertiesCounter($propertyCounts, $status)
     {
-        if(isset($propertyCounts[$purpose][$status])){
-            return intval($propertyCounts[$purpose][$status]);
+        if(isset($propertyCounts[$status])){
+            return intval($propertyCounts[$status][$status]);
         }else{
             return 0;
         }
     }
 
-    public function countProperties($userId)
+    public function countProperties()
     {
-        $rawPropertyCounts = $this->rawPropertyCounts($userId);
-        $purposes = (new PropertyPurposesRepoProvider())->repo()->all();
+        $rawPropertyCounts = $this->rawPropertyCounts();
         $statuses = (new PropertyStatusesRepoProvider())->repo()->all();
-
         $finalCounts = [];
-        foreach($purposes as $purpose /* @var $purpose PropertyPurpose::class */)
-        {
-            $pStatuses = [];
-            foreach($statuses as $status /* @var $status PropertyStatus::class */)
+          foreach($statuses as $status /* @var $status PropertyStatus::class */)
             {
-                $pStatuses[$status->id] = $this->propertiesCounter($rawPropertyCounts,$purpose->id, $status->id);
+                $finalCounts[$status->id] = $this->propertiesCounter($rawPropertyCounts, $status->id);
             }
-            $finalCounts[$purpose->id] = $pStatuses;
-        }
         return $finalCounts;
     }
 }

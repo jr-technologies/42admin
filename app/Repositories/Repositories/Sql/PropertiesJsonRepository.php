@@ -40,25 +40,38 @@ class PropertiesJsonRepository extends SqlRepository implements PropertiesJsonRe
     {
         return $this->factory->getAllProperties();
     }
-    public function getActiveProperties()
+    public function getActiveProperties($params)
     {
-        return $this->factory->getActiveProperties($this->propertyStatus->getActiveStatusId());
+        $params['id'] = $this->propertyStatus->getActiveStatusId();
+        return $this->factory->getActiveProperties($params);
     }
-    public function getPendingProperties()
+    public function getPropertiesByUser($params)
     {
-        return $this->factory->getPendingProperties($this->propertyStatus->getPendingStatusId());
+        return $this->factory->getPropertiesByUser($params);
+    }
+    public function propertyCount()
+    {
+        return $this->factory->propertyCount();
+    }
+    public function getPendingProperties($params)
+    {
+        $params['id'] = $this->propertyStatus->getPendingStatusId();
+        return $this->factory->getPendingProperties($params);
     }
     public function getExpiredProperties()
     {
-        return $this->factory->getExpiredProperties($this->propertyStatus->getExpiredStatusId());
+        $params['id'] = $this->propertyStatus->getExpiredStatusId();
+        return $this->factory->getExpiredProperties($params);
     }
     public function getRejectedProperties()
     {
-        return $this->factory->getRejectedProperties($this->propertyStatus->getRejectedStatusId());
+        $params['id'] = $this->propertyStatus->getRejectedStatusId();
+        return $this->factory->getRejectedProperties($params);
     }
     public function getDeletedProperties()
     {
-        return $this->factory->getDeletedProperties($this->propertyStatus->getDeletedStatusId());
+        $params['id'] = $this->propertyStatus->getDeletedStatusId();
+        return $this->factory->getDeletedProperties($params);
     }
     public function find($id)
     {

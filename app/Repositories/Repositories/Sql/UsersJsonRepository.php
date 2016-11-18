@@ -95,8 +95,18 @@ class UsersJsonRepository extends SqlRepository implements UsersJsonRepoInterfac
     {
         return $this->factory->updateWhere($condition ,$data);
     }
-    public function getPendingAgents()
+    public function getPendingAgents($params)
     {
-        return $this->factory->getPendingAgents();
+        $params['id'] = 0;
+        return $this->factory->getPendingAgents($params);
+    }
+    public function getActiveAgents($params)
+    {
+        $params['id'] = 1;
+        return $this->factory->getActiveAgents($params);
+    }
+    public function agentCount()
+    {
+        return $this->factory->agentCount();
     }
 }

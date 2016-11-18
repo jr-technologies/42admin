@@ -44,6 +44,10 @@ class UserFactory extends SQLFactory implements SQLFactoriesInterface{
     {
         return $this->tableGateway->getTable();
     }
+    public function getAgentCountByStatus()
+    {
+        return $this->tableGateway->getAgentCountByStatus();
+    }
     public function setTable($table)
     {
         $this->tableGateway->setTable($table);
@@ -55,9 +59,8 @@ class UserFactory extends SQLFactory implements SQLFactoriesInterface{
     {
         return $this->mapCollection($this->tableGateway->all());
     }
-    public function makeTrustedAgent(User $user)
+    public function UpdateAgentStatus(User $user)
     {
-        $user->trustedAgent = 1;
         return $this->tableGateway->updateWhere(['id'=>$user->id],$this->mapUserOnTable($user));
     }
     public function approveAgent(User $user)

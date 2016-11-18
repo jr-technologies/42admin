@@ -122,14 +122,49 @@ class PropertyJsonQueryBuilder extends QueryBuilder{
             ->where($agencyTable.'.id','=',$agencyId)
             ->get();
     }
+    public function getPropertiesByUser($params)
+    {
+        $propertyTable = (new PropertyFactory())->getTable();
+        return DB::table($propertyTable)
+            ->join($this->table, $this->table .'.property_id', '=', $propertyTable .'.id')
+            ->select(DB::raw('SQL_CALC_FOUND_ROWS ' . $this->table . '.json'))
+            ->where($propertyTable . '.owner_id', '=', $params['userId'])
+            ->skip($this->computePagination($params)['start'])->take(config('constants.PROPERTIES_LIMIT'))
+            ->get();
+    }
 
-    public function getPropertiesByStatuses($propertyStatus)
+    public function getPropertiesByStatuses($params)
     {
         $propertyTable = (new PropertyFactory())->getTable();
         return DB::table($propertyTable)
             ->join($this->table,$propertyTable.'.id','=',$this->table.'.property_id')
-            ->select($this->table.'.json')
-            ->where($propertyTable.'.property_status_id','=',$propertyStatus)
+            ->select(DB::raw('SQL_CALC_FOUND_ROWS '.$this->table.'.json'))
+            ->where($propertyTable.'.property_status_id','=',$params['id'])
+            ->skip($this->computePagination($params)['start'])->take(config('constants.PROPERTIES_LIMIT'))
             ->get();
+    }
+
+    public function propertyCount()
+    {
+        return DB::select('select FOUND_ROWS() as total_records');
+    }
+
+    private function computePagination($params)
+    {
+        $pagination = [
+            'start' => 0,
+            'limit' => config('constants.PROPERTIES_LIMIT')
+        ];
+        if(isset($params['page']) ){
+            $page = intval($params['page']);
+            $page = ($page < 1)?1: $page;
+            $limit = intval($params['limit']);
+            $limit = ($limit < 1)?config('constants.PROPERTIES_LIMIT'):$limit;
+            $start = $limit*($page-1);
+
+            $pagination['start'] = $start;
+            $pagination['limit'] = $limit;
+        }
+        return $pagination;
     }
 }

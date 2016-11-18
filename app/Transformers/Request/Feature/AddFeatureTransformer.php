@@ -18,10 +18,10 @@ class AddFeatureTransformer extends RequestTransformer
        return [
            'featureSectionId'=>$this->request->input('feature_section_id'),
            'featureName'=>$this->request->input('feature_name'),
-           'featureInputName'=>$this->request->input('feature_input_name'),
            'featureHtmlStructureId'=>$this->request->input('feature_html_structure_id'),
            'featurePossibleValues'=>$this->request->input('feature_possible_values'),
            'featurePriority'=>$this->request->input('feature_priority'),
+           'subTypeId'=>$this->request->input('subTypeId'),
        ];
    }
 }

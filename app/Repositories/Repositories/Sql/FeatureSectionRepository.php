@@ -10,45 +10,20 @@ namespace App\Repositories\Repositories\Sql;
 
 
 use App\DB\Providers\SQL\Factories\Factories\FeatureSection\FeatureSectionFactory;
-use App\DB\Providers\SQL\Models\FeatureSection;
-use App\Repositories\Interfaces\Repositories\FeatureSectionRepoInterface;
+use App\DB\Providers\SQL\Factories\Factories\News\NewsFactory;
+use App\Repositories\Interfaces\Repositories\NewsRepoInterface;
 
 
-class FeatureSectionRepository extends SqlRepository implements FeatureSectionRepoInterface
+class FeatureSectionRepository extends SqlRepository implements NewsRepoInterface
 {
-    private $factory;
+    private $featureSection;
     public function __construct()
     {
-         $this->factory = new FeatureSectionFactory();
+        $this->featureSection = new FeatureSectionFactory();
     }
-    public function store(FeatureSection $featureSection)
-    {
-        return $this->factory->store($featureSection);
-    }
-
-
-    public function getById($id)
-    {
-        return $this->factory->find($id);
-    }
-
     public function all()
     {
-        return $this->factory->all();
+        return $this->featureSection->all();
     }
 
-    public function update(FeatureSection $featureSection)
-    {
-        $this->factory->update($featureSection);
-        return $this->factory->find($featureSection->id);
-    }
-
-    public function delete(FeatureSection $featureSection)
-    {
-        return $this->factory->delete($featureSection);
-    }
-//    public function getBySociety($id)
-//    {
-//        return $this->factory->getBySociety($id);
-//    }
 }

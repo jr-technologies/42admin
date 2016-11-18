@@ -13,6 +13,7 @@ use App\Http\Requests\Interfaces\RequestInterface;
 use App\Http\Requests\Request;
 use App\Http\Validators\Validators\UserValidators\GetAdminAgentsValidator;
 use App\Http\Validators\Validators\UserValidators\GetAgentValidator;
+use App\Repositories\Providers\Providers\UsersRepoProvider;
 use App\Transformers\Request\User\GetAdminAgentsTransformer;
 use App\Transformers\Request\User\GetAgentTransformer;
 class GetAdminAgentRequest extends Request implements RequestInterface{
@@ -21,12 +22,16 @@ class GetAdminAgentRequest extends Request implements RequestInterface{
     public function __construct(){
         parent::__construct(new GetAdminAgentsTransformer($this->getOriginalRequest()));
         $this->validator = new GetAdminAgentsValidator($this);
+        $this->usersRepo = (new UsersRepoProvider())->repo();
     }
 
     public function authorize(){
         return true;
     }
-
+    public function getUserModel()
+    {
+        return $this->usersRepo->getById($this->get('userId'));
+    }
     public function validate(){
         return $this->validator->validate();
     }

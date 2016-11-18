@@ -27,4 +27,45 @@ class CityQueryBuilder extends QueryBuilder
                 ->where($societyTable.'.id','=',$societyId)
                 ->first();
     }
+    public function getImportantCities()
+    {
+        return  DB::table($this->table)
+            ->select($this->table.'.*')
+            ->where($this->table.'.priority','>',0)
+            ->orderBy($this->table.'.priority', 'DESC')
+            ->get();
+    }
+
+    public function getAllCities($params =[])
+    {
+        return DB::table($this->table)
+            ->select(DB::raw('SQL_CALC_FOUND_ROWS '.$this->table.'.*'))
+            ->skip($this->computePagination($params)['start'])->take($this->computePagination($params)['limit'])
+            ->groupBy($this->table.'.id')
+            ->orderBy($this->table.'.priority','DESC')
+            ->get();
+    }
+    public function citesCount()
+    {
+        return DB::select('select FOUND_ROWS() as total_records');
+    }
+
+    private function computePagination($params)
+    {
+        $pagination = [
+            'start' => 0,
+            'limit' => config('constants.PROPERTIES_LIMIT')
+        ];
+        if(isset($params['page']) ){
+            $page = intval($params['page']);
+            $page = ($page < 1)?1: $page;
+            $limit = intval($params['limit']);
+            $limit = ($limit < 1)?config('constants.PROPERTIES_LIMIT'):$limit;
+            $start = $limit*($page-1);
+
+            $pagination['start'] = $start;
+            $pagination['limit'] = $limit;
+        }
+        return $pagination;
+    }
 }

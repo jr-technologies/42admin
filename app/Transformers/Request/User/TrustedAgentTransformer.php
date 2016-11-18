@@ -15,7 +15,7 @@ class TrustedAgentTransformer extends RequestTransformer{
 
     public function transform(){
         return [
-            'userId' => $this->request->get('agent_id')
+            'userId' => $this->request->input('agent_id')
         ];
     }
 } 

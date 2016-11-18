@@ -20,8 +20,8 @@ class AddCityValidator extends CityValidator implements ValidatorsInterface
     public function rules()
     {
         return[
-            'country_id' => 'required',
-            'name'=>'required|min:5|max:25'
+            'countryId' => 'required',
+            'name'=>'required|min:3|max:25'
         ];
     }
 }

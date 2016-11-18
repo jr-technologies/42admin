@@ -33,10 +33,11 @@ class AddFeatureRequest extends Request implements RequestInterface
         $feature = new Feature();
         $feature->featureSectionId = $this->get('featureSectionId');
         $feature->name = $this->get('featureName');
-        $feature->inputName = $this->get('featureInputName');
+        $feature->inputName = $this->get('featureName').'___'.uniqid();
         $feature->htmlStructureId = $this->get('featureHtmlStructureId');
         $feature->possibleValues = $this->get('featurePossibleValues');
         $feature->priority = $this->get('featurePriority');
+        $feature->subTypeId = $this->get('subTypeId');
         return $feature;
     }
 }

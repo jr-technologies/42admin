@@ -32,7 +32,7 @@ class GetAdminAgentsValidator extends UserValidator implements ValidatorsInterfa
     public function rules()
     {
         return [
-            'userId'=>'required'
+
         ];
     }
 

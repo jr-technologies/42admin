@@ -15,7 +15,9 @@ class GetAdminAgentsTransformer extends RequestTransformer{
 
     public function transform(){
         return [
-            'userId' => $this->request->get('userId')
+            'userId'=> $this->request->input('agent_id'),
+            'limit'=>$this->request->input('limit'),
+            'page'=>$this->request->input('page')
         ];
     }
 } 

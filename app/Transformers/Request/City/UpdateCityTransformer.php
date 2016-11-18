@@ -17,9 +17,11 @@ class UpdateCityTransformer extends RequestTransformer
     public function transform()
     {
         return [
-            'id' =>$this->request->input('city_id'),
+            'id'=>$this->request->input('city_id'),
             'name'=>$this->request->input('city_name'),
-            'country_id' => $this->request->input('country_id')
+            'countryId' => $this->request->input('country_id'),
+            'priority' => $this->request->input('priority'),
+            'file' => $this->request->file('fileToUpload')
         ];
     }
 }

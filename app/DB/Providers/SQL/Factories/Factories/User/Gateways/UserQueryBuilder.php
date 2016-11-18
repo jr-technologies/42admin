@@ -13,6 +13,7 @@ use App\DB\Providers\SQL\Factories\Factories\Agency\AgencyFactory;
 use App\DB\Providers\SQL\Factories\Factories\AgencySociety\AgencySocietyFactory;
 use App\DB\Providers\SQL\Factories\Factories\AgencyStaff\AgencyStaffFactory;
 use App\DB\Providers\SQL\Factories\Factories\User\UserFactory;
+use App\DB\Providers\SQL\Factories\Factories\UserJson\UserJsonFactory;
 use App\DB\Providers\SQL\Factories\Factories\UserRole\UserRolesFactory;
 use App\DB\Providers\SQL\Factories\Helpers\QueryBuilder;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +22,7 @@ class UserQueryBuilder extends QueryBuilder{
 
     public function __construct(){
         $this->table = "users";
+
     }
 
     public function addRoles($userId, $roles)
@@ -34,6 +36,13 @@ class UserQueryBuilder extends QueryBuilder{
         }
 
         return $this->insertMultiple($userRoles, 'user_roles');
+    }
+    public function getAgentCountByStatus()
+    {
+        return DB::table($this->table)
+            ->selectRaw('trusted_agent, count('.$this->table.'.id) as totalAgents')
+            ->groupBy('trusted_agent')
+            ->get();
     }
 
 }

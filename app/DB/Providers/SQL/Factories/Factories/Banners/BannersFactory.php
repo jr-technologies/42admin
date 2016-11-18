@@ -11,21 +11,39 @@ use App\DB\Providers\SQL\Factories\Factories\Banners\Gateways\BannersQueryBuilde
 use App\DB\Providers\SQL\Factories\SQLFactory;
 use App\DB\Providers\SQL\Interfaces\SQLFactoriesInterface;
 use App\DB\Providers\SQL\Models\Banner;
-use App\DB\Providers\SQL\Models\Block;
+use App\DB\Providers\SQL\Models\BannersDetail;
 
 
 class BannersFactory extends SQLFactory implements SQLFactoriesInterface
 {
     private $tableGateway = null;
+    public  $bannerDetail =null;
     public function __construct()
     {
         $this->model = new Banner();
+        $this->bannerDetail = new BannersDetail();
         $this->tableGateway = new BannersQueryBuilder();
     }
 
     public function getAllBanners($params)
     {
-        return $this->mapCollection($this->tableGateway->getAllBanners($params));
+        $final =[];
+        $Banners = $this->tableGateway->getAllBanners($params);
+        foreach($Banners as $banner)
+        {
+            $final[] =$this->bannerDetail($banner);
+        }
+        return $final;
+    }
+    public function getPageBanners($params)
+    {
+        $Banners  = $this->tableGateway->getPageBanners($params);
+        $final =[];
+        foreach($Banners as $banner)
+        {
+            $final[] =$this->bannerDetail($banner);
+        }
+        return $final;
     }
     public function all()
     {
@@ -86,6 +104,20 @@ class BannersFactory extends SQLFactory implements SQLFactoriesInterface
         $banner->bannerType = $result->banner_type;
         $banner->image = $result->image;
         $banner->position = $result->position;
+        $banner->createdAt = $result->created_at;
+        $banner->updatedAt = $result->updated_at;
+        return $banner;
+    }
+    public function bannerDetail($result)
+    {
+        $banner = clone($this->bannerDetail);
+        $banner->id = $result->id;
+        $banner->bannerLink = $result->banner_link;
+        $banner->bannerPriority = $result->banner_priority;
+        $banner->bannerType = $result->banner_type;
+        $banner->image = $result->image;
+        $banner->position = $result->position;
+        $banner->page = $result->page;
         $banner->createdAt = $result->created_at;
         $banner->updatedAt = $result->updated_at;
         return $banner;

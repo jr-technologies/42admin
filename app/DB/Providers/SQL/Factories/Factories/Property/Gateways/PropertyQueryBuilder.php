@@ -9,6 +9,7 @@ namespace App\DB\Providers\SQL\Factories\Factories\Property\Gateways;
 use App\DB\Providers\SQL\Factories\Factories\Block\BlockFactory;
 use App\DB\Providers\SQL\Factories\Factories\City\CityFactory;
 use App\DB\Providers\SQL\Factories\Factories\Country\CountryFactory;
+use App\DB\Providers\SQL\Factories\Factories\Location\LocationFactory;
 use App\DB\Providers\SQL\Factories\Factories\PropertyJson\PropertyJsonFactory;
 use App\DB\Providers\SQL\Factories\Factories\PropertyPurpose\PropertyPurposeFactory;
 use App\DB\Providers\SQL\Factories\Factories\PropertySubType\PropertySubTypeFactory;
@@ -23,7 +24,7 @@ class PropertyQueryBuilder extends QueryBuilder
         $this->table = 'properties';
     }
 
-    public function getCompleteLocation($propertyId)
+    public function getCompleteLocation_deprecated ($propertyId)
     {
         $blocks = (new BlockFactory())->getTable();
         $societies = (new SocietyFactory())->getTable();
@@ -44,14 +45,35 @@ class PropertyQueryBuilder extends QueryBuilder
             ->first();
     }
 
-    public function countProperties($userId)
+    public function getCompleteLocation($propertyId)
+    {
+        //$blocks = (new BlockFactory())->getTable();
+        //$societies = (new SocietyFactory())->getTable();
+        $location = (new LocationFactory())->getTable();
+        $cities = (new CityFactory())->getTable();
+        $countries = (new CountryFactory())->getTable();
+        return  DB::table($this->table)
+            ->leftjoin($location,$this->table.'.location_id','=',$location.'.id')
+            ->leftjoin($cities,$location.'.city_id','=',$cities.'.id')
+            ->leftjoin($countries,$cities.'.country_id','=',$countries.'.id')
+            ->select(
+                $countries.'.id as countryId',$countries.'.country as countryName',
+                $cities.'.id as cityId',$cities.'.city as cityName',
+                $location.'.id as locationId',$location.'.location as locationName'
+                ,$location.'.city_id as cityId',$location.'.lat as lat',
+                $location.'.long as long'
+            )
+            ->where($this->table.'.id','=',$propertyId)
+            ->first();
+    }
+
+    public function countProperties()
     {
         $propertyJsonTable = (new PropertyJsonFactory())->getTable();
         return DB::table($this->table)
             ->join($propertyJsonTable,$this->table.'.id','=',$propertyJsonTable.'.property_id')
-            ->selectRaw('purpose_id, property_status_id, count('.$this->table.'.id) as totalPropertiesByStatus')
-            ->where('owner_id','=',$userId)
-            ->groupBy('purpose_id', 'property_status_id')
+            ->selectRaw( 'property_status_id, count('.$this->table.'.id) as totalPropertiesByStatus')
+            ->groupBy( 'property_status_id')
             ->get();
     }
 
@@ -99,4 +121,7 @@ class PropertyQueryBuilder extends QueryBuilder
             ->groupBy($this->table.'.property_sub_type_id')
             ->get();
     }
+
+
+
 }

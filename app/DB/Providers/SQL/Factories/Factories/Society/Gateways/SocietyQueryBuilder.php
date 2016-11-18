@@ -58,4 +58,11 @@ class SocietyQueryBuilder extends QueryBuilder
             ->select($this->table.'.*')
             ->get();
     }
+    public function getByCity($cityId)
+    {
+         return DB::table($this->table)
+            ->select($this->table.'.*')
+            ->where($this->table.'.city_id','=',$cityId)
+            ->get();
+    }
 }

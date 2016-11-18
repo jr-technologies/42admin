@@ -15,6 +15,7 @@ use App\DB\Providers\SQL\Interfaces\SQLFactoriesInterface;
 use App\DB\Providers\SQL\Models\Admin;
 use App\DB\Providers\SQL\Models\Agency;
 use App\DB\Providers\SQL\Models\AgencySociety;
+use Mockery\CountValidator\Exception;
 
 class AdminFactory extends SQLFactory implements SQLFactoriesInterface{
     private $tableGateway = null;
@@ -33,7 +34,14 @@ class AdminFactory extends SQLFactory implements SQLFactoriesInterface{
     }
     public function findWhere(array $conditions)
     {
-        return $this->map($this->tableGateway->first($conditions));
+        try{
+            return $this->map($this->tableGateway->first($conditions));
+        }
+        catch(\Exception $e)
+        {
+            return null;
+        }
+
     }
     public function getTable()
     {
@@ -116,13 +124,14 @@ class AdminFactory extends SQLFactory implements SQLFactoriesInterface{
 
     /**
      * @param $result
-     * @return Agency::class
+     * @return Admin::class
      **/
     public function map($result)
     {
         $admin = clone($this->model);
         $admin->name = $result->name;
         $admin->email = $result->email;
+        $admin->password = $result->password;
         $admin->createdAt = $result->created_at;
         $admin->updatedAt = $result->updated_at;
         return $admin;
