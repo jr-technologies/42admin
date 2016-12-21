@@ -26,6 +26,10 @@ class PathHelper extends Helper
     }
     public static function nugreePublicPath()
     {
-        return "http://nugree.com";
+        return "/home/propett6/public_html/nugree/public";
+    }
+    public static function nugreePblicPath()
+    {
+        return 'http://nugree.com';
     }
 }

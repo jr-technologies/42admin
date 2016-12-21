@@ -12,6 +12,7 @@ namespace App\DB\Providers\SQL\Factories\Factories\PropertyJson\Gateways;
 use App\DB\Providers\SQL\Factories\Factories\Agency\AgencyFactory;
 use App\DB\Providers\SQL\Factories\Factories\AgencyStaff\AgencyStaffFactory;
 use App\DB\Providers\SQL\Factories\Factories\FavouriteProperty\FavouritePropertyFactory;
+use App\DB\Providers\SQL\Factories\Factories\Location\LocationFactory;
 use App\DB\Providers\SQL\Factories\Factories\Property\PropertyFactory;
 use App\DB\Providers\SQL\Factories\Factories\PropertyJson\Gateways\Helpers\UserPropertiesHelper;
 use App\DB\Providers\SQL\Factories\Factories\PropertyJson\PropertyJsonFactory;
@@ -30,7 +31,17 @@ class PropertyJsonQueryBuilder extends QueryBuilder{
     {
         return DB::table($this->table)->where('property_id','=',$id)->first();
     }
-
+    public function gerPropertiesByLocation($locationId)
+    {
+        $propertyTable = (new PropertyFactory())->getTable();
+        $locationIdTable = (new LocationFactory())->getTable();
+        return DB::table($propertyTable)
+            ->leftjoin($this->table,$propertyTable.'.id','=',$this->table.'.property_id')
+            ->leftjoin($locationIdTable,$propertyTable.'.location_id','=',$locationIdTable.'.id')
+            ->select($this->table.'.json')
+            ->where($locationIdTable.'.id','=',$locationId)
+            ->get();
+    }
     public function search(array $params)
     {
         return (new Cheetah())->setInstructions($params)->go();

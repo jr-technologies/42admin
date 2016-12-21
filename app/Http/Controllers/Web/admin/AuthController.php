@@ -20,7 +20,7 @@ class AuthController extends Controller
     }
     public function getLoginPage()
     {
-        return $this->response->setView('Auth.login')->respond(['data'=>'']);
+        return $this->response->setView('auth.login')->respond(['data'=>'']);
     }
     public function login(AdminLoginRequest $request)
     {

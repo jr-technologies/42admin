@@ -8,6 +8,7 @@ use App\Events\Events\Agency\AgencySocietiesUpdated;
 use App\Events\Events\Agency\AgencyUpdated;
 use App\Events\Events\Feature\FeatureJsonCreated;
 use App\Events\Events\Feature\UpdateFeatureJson;
+use App\Events\Events\Location\LocationCreated;
 use App\Events\Events\Property\PropertiesStatusChanged;
 use App\Events\Events\Property\PropertyCreated;
 use App\Events\Events\Property\PropertyDeleted;
@@ -29,6 +30,7 @@ use App\Listeners\Listeners\Agency\UpdateAgencyInPropertiesJson;
 use App\Listeners\Listeners\Agency\UpdateAgencyInUserJson;
 use App\Listeners\Listeners\Feature\CreateFeatureJsonDocument;
 use App\Listeners\Listeners\Feature\UpdateFeatureJsonDocument;
+use App\Listeners\Listeners\Location\AddLocationInAlgolia;
 use App\Listeners\Listeners\Property\CreatePropertyJsonDocument;
 use App\Listeners\Listeners\Property\DeletePropertyJsonDocument;
 use App\Listeners\Listeners\Property\PropertyDEVerifyInPropertyJson;
@@ -57,6 +59,9 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         UserCreated::class=> [
             CreateUserJsonDocument::class,
+        ],
+        LocationCreated::class=> [
+            AddLocationInAlgolia::class,
         ],
         UserBasicInfoUpdated::class => [
             UpdateUserBasicInfoJsonDocument::class

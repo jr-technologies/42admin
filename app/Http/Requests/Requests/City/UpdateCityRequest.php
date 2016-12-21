@@ -39,9 +39,15 @@ class UpdateCityRequest extends Request implements RequestInterface{
     public function getCityModel()
     {
         $city = $this->city->getById($this->get('id'));
+        $city->id = $this->get('id');
         $city->name = $this->get('name');
         $city->countryId = $this->get('countryId');
         $city->priority = $this->get('priority');
+        $city->title = $this->get('title');
+        $city->description = $this->get('description');
+        $city->keyWord = $this->get('keyword');
+        $city->index = $this->get('index');
+        $city->slug = preg_replace('/\s+/', '_',$this->get('name').$this->get('id'));
         if($this->get('file') !=null && $this->get('file') !="")
             $city->path = $this->getCityImage();
 

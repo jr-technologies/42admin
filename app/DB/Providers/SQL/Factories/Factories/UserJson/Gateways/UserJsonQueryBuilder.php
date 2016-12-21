@@ -87,7 +87,7 @@ class UserJsonQueryBuilder extends QueryBuilder{
            ->select(DB::raw('SQL_CALC_FOUND_ROWS '.$this->table.'.json'))
            ->where($userRoleTable.'.role_id','=',$this->roleId->getAgentBroker())
            ->where($userTable.'.trusted_agent','=',$params['id'])
-           ->groupBy($this->table.'user_id')
+           ->groupBy($this->table.'.user_id')
            ->skip($this->computePagination($params)['start'])->take(config('constants.PROPERTIES_LIMIT'))
            ->get();
     }

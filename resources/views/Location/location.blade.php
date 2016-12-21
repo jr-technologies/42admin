@@ -37,6 +37,30 @@
                 <input type="text" name="long" placeholder="Add long">
             </div>
         </div>
+    <div class="layout">
+        <label for="city-pro">Title</label>
+        <div class="input-holder">
+            <input type="text" name="title" placeholder="Add Meta">
+        </div>
+    </div>
+    <div class="layout">
+        <label for="city-pro">Key Word</label>
+        <div class="input-holder">
+            <input type="text" name="keyword" placeholder="Add KeyWord">
+        </div>
+    </div>
+    <div class="layout">
+        <label for="city-pro">Description</label>
+        <div class="input-holder">
+            <input type="text" name="description" placeholder="Add Priority">
+        </div>
+    </div>
+    <div class="layout">
+        <label for="city-pro">No Index</label>
+        <div class="input-holder">
+            <input type="text" name="index" placeholder="Add Index">
+        </div>
+    </div>
             <div class="layout text-center">
                 <button class="btn-default" type="submit">Add Location<span class="icon-arrow-right"></span></button>
             </div>

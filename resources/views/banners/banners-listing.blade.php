@@ -2,7 +2,7 @@
 @section('content')
 <div class="layout text-right"><a href="{{URL::to('banners')}}" class="btn-hollow">Add a Banner</a></div>
     <div class="banner-listing">
-        <ul class="listing-pro">
+        <div class="table-responsive"><ul class="listing-pro">
             <li class="t-h text-upparcase text-center">
                 <div class="pro-id border">
                     <label for="property-id" class="customCheckbox">
@@ -37,11 +37,11 @@
                     <ul class="control-link">
                         {{Form::open(array('url'=>'get/update/banner/form','method'=>'POST','class'=>'rejectApprove-form'))}}
                         <input hidden name="banner_id" value="{{$banner->id}}">
-                        <li class="active"><button><span class="icon-update-arrows"></span></span>Update</button></li>
+                        <li class="active" title="Update"><button><span class="icon-update-arrows"></span></span></button></li>
                         {{Form::close()}}
                         {{Form::open(array('url'=>'delete/banner','method'=>'POST'))}}
                         <input hidden name="banner_id" value="{{$banner->id}}">
-                        <li class="deactive"><button><span class="icon-cross"></span>Delete</button></li>
+                        <li class="deactive" title="Delete"><button><span class="icon-cross"></span></button></li>
                         {{Form::close()}}
 
 
@@ -56,7 +56,7 @@
                     <p>There is no property in record.</p>
                 </div>
             </li>
-        </ul>
+        </ul></div>
     </div>
     <?php
     $for_previous_link = $_GET;

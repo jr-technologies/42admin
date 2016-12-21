@@ -46,6 +46,12 @@ class UpdateLocationRequest extends Request implements RequestInterface{
         $location->location = $this->get('location');
         $location->lat = $this->get('lat');
         $location->long = $this->get('long');
+        $location->title = $this->get('title');
+        $location->keyword = $this->get('keyword');
+        $location->description = $this->get('description');
+        $location->index = $this->get('index');
+        $location->slug = preg_replace('/\s+/', '_', $this->get('location').$this->get('id'));
+
         if($this->get('path') !="" && $this->get('path') !=null)
             $location->path = $this->getLocationPath();
 

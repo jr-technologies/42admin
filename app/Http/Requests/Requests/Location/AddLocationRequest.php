@@ -41,6 +41,10 @@ class AddLocationRequest extends Request implements RequestInterface{
         $location->path = ($this->get('path') !=null)?$this->getLocationPath():"";
         $location->lat = $this->get('lat');
         $location->long = $this->get('long');
+        $location->meta = $this->get('meta');
+        $location->description = $this->get('description');
+        $location->keyword = $this->get('keyword');
+        $location->index = $this->get('index');
         return $location;
     }
     public function getLocationPath()

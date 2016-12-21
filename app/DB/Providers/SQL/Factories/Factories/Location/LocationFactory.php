@@ -69,7 +69,10 @@ class LocationFactory extends SQLFactory implements SQLFactoriesInterface
     public function store(Location $location)
     {
         $location->createdAt = date('Y-m-d h:i:s');
-        return $this->tableGateway->insert($this->mapPropertyTypeOnTable($location));
+        $location->id = $this->tableGateway->insert($this->mapPropertyTypeOnTable($location));
+        $location->slug =  preg_replace('/[^A-Za-z0-9\-]/', '_', $location->location.$location->id);
+        $this->tableGateway->update($location->id,$this->mapPropertyTypeOnTable($location));
+        return $location;
     }
     public function delete(Location $location)
     {
@@ -87,6 +90,11 @@ class LocationFactory extends SQLFactory implements SQLFactoriesInterface
             'path'=>$location->path,
             'lat'=>$location->lat,
             'long'=>$location->long,
+            'title'=>$location->title,
+            'description'=>$location->description,
+            'keyword'=>$location->keyword,
+            'index'=>$location->index,
+            'slug'=>$location->slug,
             'updated_at' => $location->updatedAt,
         ];
     }
@@ -123,6 +131,11 @@ class LocationFactory extends SQLFactory implements SQLFactoriesInterface
         $location->path = $result->path;
         $location->lat = $result->lat;
         $location->long = $result->long;
+        $location->title = $result->title;
+        $location->keyword = $result->keyword;
+        $location->description = $result->description;
+        $location->index = $result->index;
+        $location->slug = $result->slug;
         $location->createdAt = $result->created_at;
         $location->updatedAt = $result->updated_at;
         return $location;

@@ -13,7 +13,7 @@
     <button><span type="submit" ></span>Submit</button>
     {{Form::close()}}
 <div class="city-listing">
-    <ul class="listing-pro">
+    <div class="table-responsive"><ul class="listing-pro">
         <li class="t-h text-upparcase text-center">
             <div class="pro-id border">
                 <label for="property-id" class="customCheckbox">
@@ -63,7 +63,7 @@
                 <p>There is no property in record.</p>
             </div>
         </li>
-    </ul>
+    </ul></div>
 </div>
 @if(isset($response['data']['locations']))
     <?php

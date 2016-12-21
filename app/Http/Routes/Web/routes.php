@@ -11,6 +11,19 @@ Route::post('set/priority',
         'uses'=>'Admin\AdminController@setPriority'
     ]);
 
+Route::get('print_locations',function(){
+    $client = new AlgoliaSearch\Client("870383THWM", "af32248e2985d139855c9040270fed28");
+    $index = $client->initIndex('pro_nugree_locations');
+
+    var_dump($client->listIndexes());
+//    $locations = (new \App\Repositories\Providers\Providers\LocationsRepoProvider())->repo()->all();
+//    $finalLocations = [];
+//     foreach($locations as $location)
+//     {
+//
+//     }
+});
+
 Route::get('get/property',
     [
         'middleware'=>
@@ -675,9 +688,63 @@ Route::post('admin/login',
     ]
 );
 
+Route::get('get-meta-page',
+    [
+        'middleware'=>
+            [
+                //'webValidate:addMetaRequest'
+            ],
+        'uses'=>'MetaController@index'
+    ]
+);
+Route::post('add/meta',
+    [
+        'middleware'=>
+            [
+              'webValidate:addMetaRequest'
+            ],
+        'uses'=>'MetaController@store'
+    ]
+);
+Route::get('meta-listing',
+    [
+        'middleware'=>
+            [
+                //    'webValidate:addMetaRequest'
+            ],
+        'uses'=>'MetaController@all'
+    ]
+);
 
+Route::post('delete-meta',
+    [
+        'middleware'=>
+            [
+               'webValidate:deleteMetaRequest'
+            ],
+        'uses'=>'MetaController@delete'
+    ]
+);
 
+Route::post('get-update-page',
+    [
+        'middleware'=>
+            [
+                'webValidate:updateMetaRequest'
+            ],
+        'uses'=>'MetaController@getUpdatePage'
+    ]
+);
 
+Route::post('update/meta',
+    [
+        'middleware'=>
+            [
+              'webValidate:updateMetaRequest'
+            ],
+        'uses'=>'MetaController@update'
+    ]
+);
 
 Route::get('/logout', function(){
     if(session()->has('authUser'))

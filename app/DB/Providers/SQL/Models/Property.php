@@ -32,6 +32,7 @@ class Property {
     public $contactPerson;
     public $phone;
     public $mobile;
+    public $slug;
     public $fax;
     public $email;
 

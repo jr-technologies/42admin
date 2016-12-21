@@ -191,6 +191,7 @@ class PropertyFactory extends SQLFactory implements SQLFactoriesInterface
         $property->statusId = $result->property_status_id;
         $property->totalViews = $result->total_views;
         $property->totalLikes = $result->total_likes;
+        $property->slug = $result->slug;
         $property->ratings = $result->rating;
 
         $property->createdBy = $result->created_by;

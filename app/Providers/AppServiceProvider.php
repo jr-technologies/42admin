@@ -10,9 +10,11 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     public $propertyTypes;
+    public $email;
     public function __construct()
     {
         $this->propertyTypes = new PropertyTypeRepository();
+        $this->email =
     }
     /**
      * Bootstrap any application services.

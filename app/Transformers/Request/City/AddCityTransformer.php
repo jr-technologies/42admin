@@ -20,7 +20,11 @@ class AddCityTransformer extends RequestTransformer
             'name'=>$this->request->input('city_name'),
             'countryId' => $this->request->input('country_id'),
             'priority' => $this->request->input('priority'),
-            'file' => $this->request->file('fileToUpload')
+            'file' => $this->request->file('fileToUpload'),
+            'title' => $this->request->input('title'),
+            'keyword' => $this->request->input('keyword'),
+            'description' => $this->request->input('description'),
+            'index' => $this->request->input('index'),
         ];
     }
 }

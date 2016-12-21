@@ -1,12 +1,11 @@
 jQuery(window).load(function(){
 	$('body').removeClass('loading-page');
 });
-
+$(window).resize(function(){
+	detectingHeight();
+});
 $(document).ready(function() {
 	$(".js-example-basic-single").select2();
-	$("#select-user").select2({
-		placeholder: "Please Select User"
-	});
 	if (screen.width < 1024){
 		$('body').removeClass('sideBar-active');
 		$(document).on('click', '.sideBar-links li', function(){
@@ -38,7 +37,16 @@ function initCarousel() {
 		swipeGap: true
 	});
 }
+function detectingHeight(){
+	var winHeight = $(window).height();
+	var headerHeight = $('#header').height();
+	var notificationAreaHeight = $('.notification-holder').height();
+	var assignTo = winHeight - headerHeight - 100;
 
+	if(notificationAreaHeight>winHeight ){
+		$('.notification-list').height(assignTo);
+	}
+}
 $(document).on('change keyup', 'input, textarea, select', function(){
 	$(this).closest('.input-holder').removeClass('error');
 });
@@ -49,13 +57,13 @@ $(document).on('click', 'a.lightbox', function(){
 
 $(document).mouseup(function (e)
 {
-	var container = $(".fancybox-opened");
+    var container = $(".fancybox-opened");
 
-	if (!container.is(e.target)
-		&& container.has(e.target).length === 0)
-	{
+    if (!container.is(e.target) 
+        && container.has(e.target).length === 0) 
+    {
 		$('#wrapper').removeClass('fancy-overlay');
-	}
+    }
 });
 
 $(document).on('click', '.generic-lightbox>.close, .fancybox-close', function(){
@@ -63,14 +71,14 @@ $(document).on('click', '.generic-lightbox>.close, .fancybox-close', function(){
 });
 
 $(document).keyup(function(e) {
-	if (e.keyCode === 27){
-		$('.fancybox-overlay-fixed').hide();
-		$('#wrapper').removeClass('fancy-overlay');
+  if (e.keyCode === 27){
+	  	$('.fancybox-overlay-fixed').hide();
+  		$('#wrapper').removeClass('fancy-overlay');
 	}   // esc
 });
 
 
-$(document).on('click', '.filters-links-opener', function(){
+$(document).on('click', '.filters-links-opener', function(){	
 	$(this).closest('li').toggleClass('active');
 
 	if($(this).closest('li').hasClass('active')){
@@ -111,36 +119,58 @@ $(document).on('click', '.searchOpener-Mobile', function(){
 $(document).on('click', '.moreDetail-slideOpener', function(){
 	$(this).closest('.t-d').find('.moreDetail-slide').slideToggle();
 	$(this).text(function(i, text){
-		return text === "View more" ? "View Less" : "View more";
-	})
+          return text === "View more" ? "View Less" : "View more";
+    })
 });
 
 $(document).on('click', '.propertyDocumentCloseBtn', function(){
-	$(this).closest('li').find('.picture-name').val('');
-	$(this).closest('li').find('img').attr('src', '#');
-	$(this).closest('li').removeClass('image-loaded');
+	 $(this).closest('li').find('.picture-name').val('');
+	 $(this).closest('li').find('img').attr('src', '#');
+	 $(this).closest('li').removeClass('image-loaded');
+ });
+$(document).on('click', '.notification-opener', function(){
+	$(this).toggleClass('active');
+	$('.notification-holder').toggleClass('active');
+});
+$(document).on('click', '.notification-list .corss', function(){
+	$(this).closest('li').slideUp();
+});
+$(document).on('click', '.all-read', function(){
+	$('.notification-list li').each(function(){
+		$(this).removeClass('active');
+	});
+});
+$(document).on('click', '.email-full-detail-opener', function(){
+	$('.opened-mail-holder').show();
+	$(this).removeClass('unread')
+});
+$(document).on('click', '.email-detail-close', function(){
+	$('.opened-mail-holder').hide();
+});
+$(document).on('click', '.email-minimizer', function(){
+	$('.opened-mail-holder').find('.mail-body').slideToggle();
 });
 
 function previewAddPropertyImg(file, target)
-{
+ {
 	previewFile(file, target);
 	$(file).closest('li').addClass('image-loaded');
 	$(file).closest('li').find('.picture-name').focus();
-}
+ }
 
 
 function previewFile(file, target) {
-	var preview = document.querySelector(target);
-	var file    = file.files[0];
-	var reader  = new FileReader();
+  var preview = document.querySelector(target);
+  var file    = file.files[0];
+  var reader  = new FileReader();
 
-	reader.onloadend = function () {
-		preview.src = reader.result;
-	}
+  reader.onloadend = function () {
+    preview.src = reader.result;
+  }
 
-	if (file) {
-		reader.readAsDataURL(file);
-	} else {
-		preview.src = "";
-	}
+  if (file) {
+    reader.readAsDataURL(file);
+  } else {
+    preview.src = "";
+  }
 }

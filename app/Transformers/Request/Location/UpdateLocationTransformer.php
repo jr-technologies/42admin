@@ -23,6 +23,10 @@ class UpdateLocationTransformer extends RequestTransformer
             'path'=>$this->request->file('path'),
             'lat'=>$this->request->input('lat'),
             'long'=>$this->request->input('long'),
+            'title'=> $this->request->input('title'),
+            'keyword' => $this->request->input('keyword'),
+            'description' => $this->request->input('description'),
+            'index' => $this->request->input('index'),
         ];
     }
 }

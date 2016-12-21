@@ -44,6 +44,7 @@ use App\Repositories\Providers\Providers\UsersRepoProvider;
 use App\Traits\Property\PropertyFilesReleaser;
 use App\Traits\Property\PropertyPriceUnitHelper;
 use App\Traits\User\UsersFilesReleaser;
+use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
 {
@@ -93,7 +94,7 @@ class AdminController extends Controller
         $propertyCount = ($this->propertiesJson->propertyCount()[0]->total_records);
         return $this->response->setView('properties.property')->respond(['data' => [
             'totalPropertiesCounts'=> $this->properties->countProperties(),
-            'properties' => $this->releasePropertiesJsonFiles($properties),
+            'properties' => $this->convertPropertiesAreaToActualUnit($this->releasePropertiesJsonFiles($properties)),
             'propertiesCount' => $propertyCount,
             'users'=>$this->getUsers(),
         ]]);
@@ -102,9 +103,10 @@ class AdminController extends Controller
     {
         $properties = $this->propertiesJson->getActiveProperties($request->all());
         $propertyCount = ($this->propertiesJson->propertyCount()[0]->total_records);
+
         return $this->response->setView('properties.property')->respond(['data' => [
             'totalPropertiesCounts'=> $this->properties->countProperties(),
-            'properties' => $this->releasePropertiesJsonFiles($properties),
+            'properties' => $this->convertPropertiesAreaToActualUnit($this->releasePropertiesJsonFiles($properties)),
             'propertiesCount' => $propertyCount,
             'users'=>$this->getUsers(),
             'linkStatus' =>'active',
@@ -115,6 +117,7 @@ class AdminController extends Controller
     {
         $properties = $this->propertiesJson->getPendingProperties($request->all());
         $propertyCount = ($this->propertiesJson->propertyCount()[0]->total_records);
+        $properties =$this->convertPropertiesAreaToActualUnit($properties);
         return $this->response->setView('properties.property')->respond(['data' => [
             'totalPropertiesCounts'=> $this->properties->countProperties(),
             'properties' => $this->releasePropertiesJsonFiles($properties),
@@ -130,7 +133,7 @@ class AdminController extends Controller
         $propertyCount = ($this->propertiesJson->propertyCount()[0]->total_records);
         return $this->response->setView('properties.property')->respond(['data' => [
             'totalPropertiesCounts'=> $this->properties->countProperties(),
-            'properties' => $this->releasePropertiesJsonFiles($properties),
+            'properties' => $this->convertPropertiesAreaToActualUnit($this->releasePropertiesJsonFiles($properties)),
             'propertiesCount' => $propertyCount,
             'users'=>$this->getUsers(),
             'linkStatus' =>'expire',
@@ -143,7 +146,7 @@ class AdminController extends Controller
         $propertyCount = ($this->propertiesJson->propertyCount()[0]->total_records);
         return $this->response->setView('properties.property')->respond(['data' => [
             'totalPropertiesCounts'=> $this->properties->countProperties(),
-            'properties' => $this->releasePropertiesJsonFiles($properties),
+            'properties' => $this->convertPropertiesAreaToActualUnit($this->releasePropertiesJsonFiles($properties)),
             'propertiesCount' => $propertyCount,
             'users'=>$this->getUsers(),
             'linkStatus' =>'rejected',
@@ -156,7 +159,7 @@ class AdminController extends Controller
         $propertyCount = ($this->propertiesJson->propertyCount()[0]->total_records);
         return $this->response->setView('properties.property')->respond(['data' => [
             'totalPropertiesCounts'=> $this->properties->countProperties(),
-            'properties' => $this->releasePropertiesJsonFiles($properties),
+            'properties' => $this->convertPropertiesAreaToActualUnit($this->releasePropertiesJsonFiles($properties)),
             'propertiesCount' => $propertyCount,
             'users'=>$this->getUsers(),
             'linkStatus' =>'rejected',

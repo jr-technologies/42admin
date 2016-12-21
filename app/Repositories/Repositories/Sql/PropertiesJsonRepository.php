@@ -31,7 +31,10 @@ class PropertiesJsonRepository extends SqlRepository implements PropertiesJsonRe
     {
         return $this->factory->all();
     }
-
+    public function gerPropertiesByLocation($locationId)
+    {
+        return $this->factory->gerPropertiesByLocation($locationId);
+    }
     public function search(array $instructions)
     {
         return $this->factory->search($instructions);

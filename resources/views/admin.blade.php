@@ -13,6 +13,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700" rel="stylesheet">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script type="text/javascript">window.jQuery || document.write('<script src="{{url('/')}}/web-apps/js/jquery-1.11.2.min.js" ><\/script>')</script>
+    <script src="https://use.fontawesome.com/fbabf169f3.js"></script>
 </head>
 <body class="loading-page sideBar-active">
 <!--<div class="page-loader">
@@ -25,7 +26,7 @@
         <a class="sideBar-opener"><span></span></a>
 
         <div class="right-header">
-            <a href="{{URL::to('logout')}}" class="logout">Logout <span class="icon-login"></span></a>
+            <a href="{{URL::to('logout')}}" class="logout"><span class="icon-login"></span></a>
             <ul class="alerts">
                 <li>
                     <a href="#"><span class="icon-message"></span></a>
@@ -66,25 +67,27 @@
                         <a href="{{URL::to('get/active/property')}}"><span class="icon-list"></span>LISTING<span
                                     class="total-tag"></span></a></li>
                     <li @if(isset($response['data']['linkStatus']) && ($response['data']['linkStatus']) == 'agent') class="active" @endif>
-                        <a href="{{URL::to('get/active/agent')}}"><span
-                                    class="icon-real-state-seller"></span>Agents<span class="total-tag"></span></a></li>
+                        <a href="{{URL::to('get/active/agent')}}"><span class="icon-real-state-seller"></span>Agents<span class="total-tag"></span></a></li>
                     <li @if(isset($response['data']['linkStatus']) && ($response['data']['linkStatus']) == 'cityListing') class="active" @endif>
-                        <a href="{{URL::to('cities/listing')}}"><span class="icon-real-state-seller"></span>Cities</a>
+                        <a href="{{URL::to('cities/listing')}}"><span class="icon-d-building"></span>Cities</a>
                     </li>
                     <li @if(isset($response['data']['linkStatus']) && ($response['data']['linkStatus']) == 'locationListing') class="active" @endif>
-                        <a href="{{URL::to('location/listing')}}"><span class="icon-real-state-seller"></span>Locations
+                        <a href="{{URL::to('location/listing')}}"><span class="icon-holding-hands-in-a-circle"></span>Locations
                         </a></li>
                     <li @if(isset($response['data']['linkStatus']) && ($response['data']['linkStatus']) == 'bannerListing') class="active" @endif>
-                        <a href="{{URL::to('banners/listing')}}"><span class="icon-real-state-seller"></span>Banners
+                        <a href="{{URL::to('banners/listing')}}"><span class="icon-prize-banner"></span>Banners
                         </a></li>
                     <li @if(isset($response['data']['linkStatus']) && ($response['data']['linkStatus']) == 'projectListing') class="active" @endif>
                         <a href="{{URL::to('project/listing')}}"><span
                                     class="icon-architect-with-building-project"></span>Projects</a></li>
                     <li @if(isset($response['data']['linkStatus']) && ($response['data']['linkStatus']) == 'newsListing') class="active" @endif>
-                        <a href="{{URL::to('news/listing')}}"><span class="icon-real-state-seller"></span>News
+                        <a href="{{URL::to('news/listing')}}"><span class="icon-folded-newspaper"></span>News
                             listing</a></li>
                     <li @if(isset($response['data']['linkStatus']) && ($response['data']['linkStatus']) == 'features') class="active" @endif>
-                        <a href="{{URL::to('features')}}"><span class="icon-real-state-seller"></span>Add Features</a></li>
+                        <a href="{{URL::to('features')}}"><i class="fa fa-plus" aria-hidden="true"></i>
+                            Add Features</a></li>
+                    <li @if(isset($response['data']['linkStatus']) && ($response['data']['linkStatus']) == 'features') class="active" @endif>
+                        <a href="{{URL::to('meta-listing')}}"><i class="fa fa-tags" aria-hidden="true"></i>Meta Listing</a></li>
                 </ul>
             </div>
         </aside>

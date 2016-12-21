@@ -33,6 +33,10 @@ class PropertyJsonFactory extends SQLFactory implements SQLFactoriesInterface{
     {
         return $this->mapCollection($this->tableGateway->all());
     }
+    public function gerPropertiesByLocation($locationId)
+    {
+        return $this->mapCollection($this->tableGateway->gerPropertiesByLocation($locationId));
+    }
     public function getAgencyProperties($agencyId)
     {
         return $this->mapCollection($this->tableGateway->getAgencyProperties($agencyId));
@@ -93,6 +97,7 @@ class PropertyJsonFactory extends SQLFactory implements SQLFactoriesInterface{
     {
         return $this->map($this->tableGateway->findByUser($id));
     }
+
     public function getById($propertyId)
     {
         return $this->map($this->tableGateway->findBy('property_id', $propertyId));
@@ -196,6 +201,7 @@ class PropertyJsonFactory extends SQLFactory implements SQLFactoriesInterface{
         $property->email = $propertyJson->email;
         $property->phone = $propertyJson->phone;
         $property->mobile = $propertyJson->mobile;
+        $property->slug = $propertyJson->slug;
         $property->isVerified = (isset($propertyJson->isVerified)?$propertyJson->isVerified: 0);
         $property->fax = $propertyJson->fax;
         $property->createdBy = $propertyJson->createdBy;

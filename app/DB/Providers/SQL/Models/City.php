@@ -15,6 +15,11 @@ class City {
     public $countryId = 1;
     public $priority =0;
     public $path="";
+    public $title="";
+    public $keyword="";
+    public $description="";
+    public $index="";
+    public $slug="";
     public $createdAt = '0000-00-00 00:00:00';
     public $updatedAt = '0000-00-00 00:00:00';
 

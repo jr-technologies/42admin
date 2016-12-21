@@ -240,6 +240,12 @@ return [
         'AppHelper' => \App\Libs\Helpers\AppHelper::class,
         'PathHelper' => \App\Libs\Helpers\PathHelper::class,
 
+        /* Meta  Requests */
+        'AddMetaRequest' => \App\Http\Requests\Requests\Meta\AddMetaRequest::class,
+        'DeleteMetaRequest' => \App\Http\Requests\Requests\Meta\DeleteMetaRequest::class,
+        'UpdateMetaRequest' => \App\Http\Requests\Requests\Meta\UpdateMetaRequest::class,
+
+
         /* LocationValidators Requests */
         'GetLocationByCityRequest' => \App\Http\Requests\Requests\Location\GetLocationByCityRequest::class,
         'AddLocationRequest' => \App\Http\Requests\Requests\Location\AddLocationRequest::class,

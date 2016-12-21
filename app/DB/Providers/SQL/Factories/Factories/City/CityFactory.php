@@ -41,7 +41,11 @@ class CityFactory extends SQLFactory implements SQLFactoriesInterface
     public function store(City $city)
     {
         $city->createdAt = date('Y-m-d h:i:s');
-        return $this->tableGateway->insert($this->mapCityOnTable($city));
+        $city->id =  $this->tableGateway->insert($this->mapCityOnTable($city));
+        $city->slug =  preg_replace('/\s+/', '_', $city->name.$city->id);
+        return $this->tableGateway->update($city->id,$this->mapCityOnTable($city));
+
+
     }
     public function delete(City $city)
     {
@@ -54,6 +58,11 @@ class CityFactory extends SQLFactory implements SQLFactoriesInterface
             'country_id'=>$city->countryId,
             'priority'=>$city->priority,
             'path'=>$city->path,
+            'title'=>$city->title,
+            'description'=>$city->description,
+            'keyword'=>$city->keyWord,
+            'index'=>$city->index,
+            'slug'=>$city->slug,
             'created_at' => $city->updatedAt,
         ];
     }
@@ -85,7 +94,10 @@ class CityFactory extends SQLFactory implements SQLFactoriesInterface
         $city->countryId = $result->country_id;
         $city->priority  = $result->priority;
         $city->path      = $result->path;
-        $city->createdAt = $result->created_at;
+        $city->title = $result->title;
+        $city->keyword = $result->keyword;
+        $city->description = $result->description;
+        $city->index = $result->index;
         $city->updatedAt = $result->updated_at;
         return $city;
     }

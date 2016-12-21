@@ -12,11 +12,16 @@ class Location {
 
     public $id = 0;
     public $cityId = "";
-    public $location = 1;
+    public $location = "";
     public $path ="";
     public $lat ="";
     public $long ="";
+    public $title="";
+    public $keyword="";
+    public $description="";
+    public $index="";
     public $priority =0;
+    public $slug="";
     public $createdAt = '0000-00-00 00:00:00';
     public $updatedAt = '0000-00-00 00:00:00';
 

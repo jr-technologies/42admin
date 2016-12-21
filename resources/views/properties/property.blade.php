@@ -20,10 +20,7 @@
                         <option value='price_desc' @if(isset($response['data']['oldValues']) &&($response['data']['oldValues']['sortBy'].'_'.$response['data']['oldValues']['order']) == 'price_desc') selected @endif>Price High to Low</option>
                         <option value='land_asc' @if(isset($response['data']['oldValues']) &&($response['data']['oldValues']['sortBy'].'_'.$response['data']['oldValues']['order']) == 'land_asc') selected @endif>Area Low to High</option>
                         <option value='land_desc' @if(isset($response['data']['oldValues']) &&($response['data']['oldValues']['sortBy'].'_'.$response['data']['oldValues']['order']) == 'land_desc') selected @endif>Area High to Low</option>
-                        {{--<option value='date_desc' @if(($response['data']['oldValues']['sortBy'].'_'.$response['data']['oldValues']['order']) == 'date_desc') selected @endif>Date New to Old</option>--}}
-                        {{--<option value='date_asc' @if(($response['data']['oldValues']['sortBy'].'_'.$response['data']['oldValues']['order']) == 'date_asc') selected @endif>Date Old to New</option>--}}
-                        {{--<option value='verified_desc' @if(($response['data']['oldValues']['sortBy'].'_'.$response['data']['oldValues']['order']) == 'verified_desc') selected @endif>Verified Only</option>--}}
-                        {{--<option value='picture_desc' @if(($response['data']['oldValues']['sortBy'].'_'.$response['data']['oldValues']['order']) == 'picture_desc') selected @endif>With Photos</option>--}}
+
                     </select>
                 </span>
             </div>
@@ -103,7 +100,7 @@
                                         <div class="slide">
                                             <a href="property?propertyId={{$property->id}}">
                                                 @if($document->type == 'image'  && $document->path != "")
-                                                    <img src="{{ url('/').'/temp/'.$document->path}}" alt="image description">
+                                                    <img src="{{ \App\Libs\Helpers\PathHelper::nugreePblicPath().'/temp/'.$document->path}}" alt="image description">
                                                 @endif
                                             </a>
                                         </div>
@@ -124,49 +121,56 @@
                     </div>
                     <div class="description">
                         <div class="layout">
-                            <a href="property?propertyId={{$property->id}}"><strong class="heading">{{ ''.$property->land->area.' '.$property->land->unit->name .' '}}{{$property->type->subType->name.' '.                                                (($property->wanted)?'required ':''). $property->purpose->name.'
-                                  in '.$property->location->location->location." ".'('.$property->location->city->name.')'}}</strong></a>
+                            <strong class="heading"><a href="property?propertyId={{$property->id}}">{{ ''.$property->land->area.' '.$property->land->unit->name .' '}}{{$property->type->subType->name.' '.                                                (($property->wanted)?'required ':''). $property->purpose->name.'
+                                  in '.$property->location->location->location." ".'('.$property->location->city->name.')'}}</a></strong>
                             <p>{{str_limit($property->description,348) }}</p>
                         </div>
                         <ul class="control-link">
                             @if($property->propertyStatus->id == 5)
                                 {{Form::open(array('url'=>'property/deActive','method'=>'POST'))}}
                                 <input hidden name="propertyId" value="{{$property->id}}">
-                                <li><button type="submit"><span class="icon-cross" ></span>DeActive</button></li>
+                                <li class="deactive"><button title="Deactive" type="submit"><span class="icon-cross" ></span></button></li>
                                 {{Form::close()}}
                             @endif
                             @if($property->propertyStatus->id == 20 || ($property->propertyStatus->id == 10))
                                 {{Form::open(array('url'=>'property/approve','method'=>'POST'))}}
                                 <input hidden name="propertyId" value="{{$property->id}}">
-                                <li><button><span class="icon-tick"></span>Active</button></li>
+                                <li class="active"><button title="Active" type="submit"><span class="icon-tick"></span></button></li>
                                 {{Form::close()}}
 
                             @endif
                             @if(($property->propertyStatus->id == 5) || ($property->propertyStatus->id == 10))
                                     {{Form::open(array('url'=>'property/reject','method'=>'POST'))}}
                                     <input hidden name="propertyId" value="{{$property->id}}">
-                                    <li><button type="submit"><span class="icon-reject-thunder" type="submit"></span>Reject</button></li>
+                                    <li class="reject"><button title="Reject" type="submit"><span class="icon-reject-thunder"></span></button></li>
                                     {{Form::close()}}
 
                             @endif
+                                @if(($property->propertyStatus->id == 10))
+                                    {{Form::open(array('url'=>'property/deleted','method'=>'POST'))}}
+                                    <input hidden name="propertyId" value="{{$property->id}}">
+                                    <li class="delete"><button title="Delete" type="submit"><span class="icon-bin-delete"></span></button></li>
+                                    {{Form::close()}}
+                                @endif
                             @if( ($property->propertyStatus->id == 15) || ($property->propertyStatus->id == 20))
                                 {{Form::open(array('url'=>'property/delete','method'=>'POST'))}}
                                      <input hidden name="propertyId" value="{{$property->id}}">
-                                    <li><button type="submit"><span class="icon-reject-thunder" type="submit"></span>SoftDelete</button></li>
+                                    <li class="delete"><button title="Delete" type="submit"><span class="icon-bin-delete"></span></button></li>
                                 {{Form::close()}}
-                            `{{Form::open(array('url'=>'property/deActive','method'=>'POST'))}}
+                            {{Form::open(array('url'=>'property/deActive','method'=>'POST'))}}
                                     <input hidden name="propertyId" value="{{$property->id}}">
-                                    <li><button type="submit"><span class="icon-cross" ></span>DeActive</button></li>
+                                    <li class="deactive"><button title="Deactive" type="submit"><span class="icon-cross"></span></button></li>
                                     {{Form::close()}}
+
                             @endif
                             @if($property->propertyStatus->id == 25)
                                 {{Form::open(array('url'=>'property/deleted','method'=>'POST'))}}
                                 <input hidden name="propertyId" value="{{$property->id}}">
-                                <li><button type="submit"><span class="icon-reject-thunder" type="submit"></span>ForceDelete</button></li>
+                                <li class="delete"><button title="Delete" type="submit"><span class="icon-cross"></span></button></li>
                                 {{Form::close()}}
                                     {{Form::open(array('url'=>'property/deActive','method'=>'POST'))}}
                                     <input hidden name="propertyId" value="{{$property->id}}">
-                                    <li><button type="submit"><span class="icon-cross" ></span>DeActive</button></li>
+                                    <li class="deactive"><button title="Deactive" type="submit"><span class="icon-cross"></span></button></li>
                                     {{Form::close()}}
                             @endif
                         </ul>
@@ -174,29 +178,42 @@
                 </div>
             </li>
            @endforeach
+
         </ul>
     </div>
     <?php
 
     $for_previous_link = $_GET;
-    $first_page =URL('/get/active/property').'?'.'page=1';
-    $pageValue = (isset($for_previous_link['page']))?$for_previous_link['page']:1;
-    ($pageValue ==1)?$for_previous_link['page'] = $pageValue:$for_previous_link['page'] = $pageValue-1;
-    $convertPreviousToQueryString  = http_build_query($for_previous_link);
-    $previousResult = URL('/get/active/property').'?'.$convertPreviousToQueryString;
+    $first_page = "";
+    if (isset($response['data']['properties'][0])&& $response['data']['properties'][0]->propertyStatus->id == 5) {
+        $first_page = URL('/get/active/property');
+    } elseif (isset($response['data']['properties'][0])&&($response['data']['properties'][0]->propertyStatus->id) == 10) {
+        $first_page = URL('/get/pending/property');
+    } elseif (isset($response['data']['properties'][0])&&($response['data']['properties'][0]->propertyStatus->id) == 15) {
+        $first_page = URL('/get/rejected/property');
+    } elseif (isset($response['data']['properties'][0])&&($response['data']['properties'][0]->propertyStatus->id) == 20) {
+        $first_page = URL('/get/expired/property');
+    } elseif (isset($response['data']['properties'][0])&&($response['data']['properties'][0]->propertyStatus->id) == 25) {
+        $first_page = URL('/get/deleted/property');
+    }
+    $start_page = $first_page . '?' . 'page=1';
+    $pageValue = (isset($for_previous_link['page'])) ? $for_previous_link['page'] : 1;
+    ($pageValue == 1) ? $for_previous_link['page'] = $pageValue : $for_previous_link['page'] = $pageValue - 1;
+    $convertPreviousToQueryString = http_build_query($for_previous_link);
+    $previousResult = $first_page . '?' . $convertPreviousToQueryString;
     ?>
     <?php
     $totalPaginationValue = intval(ceil($response['data']['propertiesCount'] / config('constants.Pagination')));
-    $last_page = URL('/get/active/property').'?'.'page='.$totalPaginationValue;
+    $last_page = $first_page . '?' . 'page=' . $totalPaginationValue;
     $for_next_link = $_GET;
-    $pageValue = (isset($for_next_link['page']))?$for_next_link['page']:1;
-    ($pageValue == $totalPaginationValue)?$for_next_link['page'] = $pageValue:$for_next_link['page'] = $pageValue+1;
-    $convertToQueryString  = http_build_query($for_next_link);
-    $nextResult = URL('/get/active/property').'?'.$convertToQueryString;
+    $pageValue = (isset($for_next_link['page'])) ? $for_next_link['page'] : 1;
+    ($pageValue == $totalPaginationValue) ? $for_next_link['page'] = $pageValue : $for_next_link['page'] = $pageValue + 1;
+    $convertToQueryString = http_build_query($for_next_link);
+    $nextResult = $first_page . '?' . $convertToQueryString;
     ?>
     <ul class="pager">
 
-        <li><a href="{{$first_page}}" class="first"><span class="icon-arrow1-left"></span></a></li>
+        <li><a href="{{$start_page}}" class="first"><span class="icon-arrow1-left"></span></a></li>
         @if($totalPaginationValue !=0)
             <li><a href="{{$previousResult}}" class="previous"><span class="icon-bold-arrow-left"></span></a></li>
         @endif
@@ -207,7 +224,7 @@
         for($i = (($current_page-3 > 0)?$current_page-3:1); $i <= (($current_page + 3 <= $paginationValue)?$current_page+3:$paginationValue);$i++){
         $query_str_to_array['page'] = $i;
         $queryString  = http_build_query($query_str_to_array);
-        $result = URL('/get/active/property').'?'.$queryString;
+        $result = $first_page.'?'.$queryString;
         ?>
         <li @if($current_page == $i)class="active" @endif><a href="{{$result}}">{{$i}}</a></li>
         <?php }?>
@@ -217,4 +234,5 @@
         <li><a href="{{$last_page}}" class="last"><span class="icon-arrow1-right"></span></a></li>
     </ul>
 </div>
+
 @endsection()
